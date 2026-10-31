@@ -356,11 +356,12 @@ flowchart LR
 **步驟**
 1. 將從客戶處取得之代碼交付壓縮檔（例如 `UNION_BANK_POC.zip`）直接放置於工作區核准路徑。
 2. 貼下一鍵交付完整性檢查提示詞。
-   - 💬 **Bob 提示詞**：`這是我剛拿到的客戶交付壓縮包 〈UNION_BANK_POC.zip〉（若有密碼，密碼為 〈Ubot1234〉）。我已取得 D2 授權。請一鍵幫我跑完步驟卡 E 的 1 至 7 步完整性稽核：(1) 在背景自動將其解壓縮至工作區核准路徑；(2) 自動解析內含之 MANIFEST.csv 宣告與 README.txt 編譯環境，比對宣告數與解壓縮後的實際檔數；(3) 自動計算工作區所有實體檔案的 SHA-256 哈希值並與 MANIFEST.csv 比對，抓出校驗碼不符或空白之項目；(4) 自動唯讀掃描所有 COBOL、Copybook、JCL 的交叉相依性（COPY/CALL 關係與缺失項目），偵測 CICS/DB2/IMS/MQ 等中介軟體關鍵字；(5) 自動彙整並輸出完整的《步驟卡 E — 程式碼交付完整性檢查報告》，並將報告自動存檔於 `.bobz/step-E-delivery-check-[日期].md`。`
+   - 💬 **Bob 提示詞**：`這是我剛拿到的客戶交付壓縮包 〈UNION_BANK_POC.zip〉（若有密碼，密碼為 〈Ubot1234〉）。我已取得 D2 授權。請一鍵幫我跑完步驟卡 E 的 1 至 7 步完整性稽核：(1) 在背景自動將其解壓縮至工作區核准路徑；(2) 自動解析內含之 MANIFEST.csv 宣告與 README.txt 編譯環境，比對宣告數與解壓縮後的實際檔數；(3) 自動計算工作區所有實體檔案的 SHA-256 哈希值並與 MANIFEST.csv 比對，抓出校驗碼不符或空白之項目；(4) 自動唯讀掃描所有 COBOL、Copybook、JCL 的交叉相依性（COPY/CALL 關係與缺失項目），偵測 CICS/DB2/IMS/MQ 等中介軟體關鍵字；(5) 自動彙整並輸出完整的《步驟卡 E — 程式碼交付完整性檢查報告》，並將報告存檔於 `delivery-output/DL-00-delivery-check.md`（不另存 `.bobz/`）。`
 
 **預期結果**
 *   **【實體檔案產出與更新】**：
-    *   **產生檔**：`delivery-output/DL-00-delivery-check.md`（交付稽核完整性報告）。
+    *   **產生檔**：`delivery-output/DL-00-delivery-check.md`（交付稽核完整性報告，唯一存放位置）。
+*   **階段交付物**：完成 **DL-00：交付完整性檢查報告**。
 *   **檔案稽核**：解壓縮後檔案數量、類型、校驗碼與 `MANIFEST.csv` 一致。
 *   **邊界確認**：所有缺失項目與動態呼叫已自動記錄並列入邊界清單。
 
@@ -465,12 +466,16 @@ flowchart LR
    - 💬 **Bob 提示詞**：`請幫我為 〈CHKRTN01〉 一鍵建立資料字典：(1) 自動提取前 〈15〉 個最關鍵的業務變數並聚焦於與 〈手續費〉 相關之欄位；(2) 自動展開縮寫並為變數生成詳細的語意描述（若工具出錯請立即停止，不可人工猜測）；(3) 自動產出實體 `bobz/DD.json`，並自我核對確保每個項目的 scope 陣列均含 〈CHKRTN01〉；(4) 請將最終產出的字典清單與縮寫對照，以表格形式呈現在對話框中。`
 3. 在差異檢視畫面逐項快速確認。
 4. 請 BIZ 簽核關鍵欄位（手續費、金額等）的業務語意。
+5. 將工作字典複製到交付資料夾（僅為方便交付；`bobz/DD.json` 仍是 Bob 背景讀取的來源）。
+   - ⌨️ **指令**（PowerShell，於工作區根目錄執行）：`Copy-Item -Path "bobz/DD.json" -Destination "delivery-output/DL-02-data-dictionary.json" -Force`
+   - 💬 **Bob 提示詞**（擇一）：`請執行 Copy-Item -Path "bobz/DD.json" -Destination "delivery-output/DL-02-data-dictionary.json" -Force，並確認兩個檔案內容一致。`
 
 **預期結果**
 *   **【實體檔案產出與更新】**：
-    *   **產生檔**：`delivery-output/DL-02-data-dictionary.json`（原為 `bobz/DD.json`，已集中至交付資料夾中以供歸檔，並保留背景讀取之相容性）。
+    *   **產生檔**：`bobz/DD.json`（工作字典，技能實際讀寫的來源）。
+    *   **複製檔**：`delivery-output/DL-02-data-dictionary.json`（步驟 5 由 `bobz/DD.json` 複製而來，僅供交付）。
 *   **語意覆蓋**：該資料字典已完整覆蓋所有與本次變更相關之手續費、金額等關鍵業務欄位，並包含業務專家的核對描述。
-*   **自動載入**：之後當 Bob 讀取 COBOL 程式或 COPYBOOK 時，會自動於背景讀入並結合 `delivery-output/DL-02-data-dictionary.json` 的語意。
+*   **自動載入**：之後當 Bob 讀取 COBOL 程式或 COPYBOOK 時，會自動於背景讀入並結合 `bobz/DD.json` 的語意。
 *   **階段交付物**：完成 **DL-02：資料字典**。
 
 **問題處理**
@@ -618,8 +623,8 @@ flowchart LR
 2. 貼下一鍵修改、診斷與審查彙整提示詞。
    - 💬 **Bob 提示詞**：`請依已核准的 implementation-plan.md 對專案進行程式修改：(1) 修改 〈CHKFEE01.cpy〉 與 〈CHKRTN01.cbl〉，嚴格維持固定格式 7–72 欄，且不超出計畫範圍；(2) 修改完成後，自動呼叫 get_diagnostics 工具對上述兩個檔案進行語法與編譯前診斷，確保 100% 無語法與編譯錯誤（若發現診斷問題請立即修復，直至診斷完全乾淨為止）；(3) 產生修改前後的 Diff 差異摘要，並自動彙整為 DL-06 審查記錄報告（包含欄位：檔名、修改位置、對應計畫項目、DEV 審閱結果）。`
 3. 開啟 IDE 的差異檢視（Diff），由 DEV 逐行進行最終審核。**不可**整批接受。
-4. 若有新增欄位，要求 Bob 自動更新資料字典。
-   - 💬 **Bob 提示詞**：`請幫我更新新增欄位到 delivery-output/DL-02-data-dictionary.json 字典檔案中，scope 請含 〈CHKRTN01〉。`
+4. 若有新增欄位，要求 Bob 自動更新資料字典，並重新複製到交付資料夾。
+   - 💬 **Bob 提示詞**：`請幫我更新新增欄位到 bobz/DD.json 字典檔案中，scope 請含 〈CHKRTN01〉；完成後執行 Copy-Item -Path "bobz/DD.json" -Destination "delivery-output/DL-02-data-dictionary.json" -Force 同步交付檔。`
 
 **預期結果**
 *   **【實體檔案產出與更新】**：
@@ -707,8 +712,8 @@ flowchart LR
 6. 彙整工時，含審查與修正時間。
 7. 彙整 AI 用量。
 8. 與人工基線比較。**不可**事先承諾節省比例。
-9. 彙整交付物 DL-01 至 DL-08。
-   - 💬 **Bob 提示詞**：`請依 DL-01 至 DL-08 的檔案，彙整成果回顧報告初稿。工時與用量欄位留空。`
+9. 彙整交付物 DL-00 至 DL-08。
+   - 💬 **Bob 提示詞**：`請依 DL-00 至 DL-08 的檔案，彙整成果回顧報告初稿。工時與用量欄位留空。`
 10. 請相關人員簽收。
 11. 結案後 14 天內（依實際約定），刪除工作站上的工作目錄。
 12. 取得刪除的書面確認。
@@ -822,8 +827,9 @@ flowchart LR
 
 | 編號 | 交付物名稱 | 對應步驟卡 | 標準實體檔案路徑與檔名（皆位於 `delivery-output/`） | 驗收人 |
 |---|---|---|---|---|
+| **DL-00** | 交付完整性檢查報告 | E | `DL-00-delivery-check.md` | DEV、MF |
 | **DL-01** | 程式掃描結果／相依關係圖 | G | `DL-01-scan-summary.md` | DEV |
-| **DL-02** | 資料字典 | H | `DL-02-data-dictionary.json` | BIZ、DEV |
+| **DL-02** | 資料字典 | H | `DL-02-data-dictionary.json`（由 `bobz/DD.json` 複製而來，僅供交付） | BIZ、DEV |
 | **DL-03** | 流程分析報告 | I | `DL-03-CHKRTN01-explanation.md` | BIZ |
 | **DL-04** | 影響分析報告 | J | `DL-04-impact-analysis.md` | 專案負責人 |
 | **DL-05** | 實施計畫 | K | `DL-05-implementation-plan.md` | 專案負責人 |

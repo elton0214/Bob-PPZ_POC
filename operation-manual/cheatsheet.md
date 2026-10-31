@@ -107,7 +107,7 @@ flowchart LR
 |---|---|---|---|
 | 🤖 **BOB** | Bob 對話＋專案規則 | 用自然語言提示詞。Bob 讀檔、比對、產出報告。規則寫在 `AGENTS.md`。 |
 | 🛠 **PPZ** | PPZ 工具 | Bob 呼叫底層剖析工具（如掃描、變更分析、控制流程與資料流程工具），用戶直接以自然語言提問即可觸發。 |
-| 🔁 **WF** | 內建工作流程／技能 | 透過「Start Workflow」啟動的引導式流程：**Explain code**、**Generate program documentation**、**Generate application documentation**、**Extract business rules**；或專屬技能：資料字典、影響分析、實施計畫。 |
+| 🔁 **WF** | 內建工作流程／技能 | 透過「Start Workflow」啟動的引導式流程：**Explain code**、**Generate program documentation**、**Generate application documentation**、**Extract business rules**；或專屬技能：/data-dictionary-management、/impact-analysis、/implementation-planning。 |
 | 👤 **人工** | 人員操作 | 核可、帳號、網路、主機編譯與測試、簽收。AI 不可取代。 |
 
 | 步驟卡 | 主要執行方式 | 適合交給 Bob／PPZ 的部分 | 必須由人工完成的部分 |
@@ -822,14 +822,14 @@ flowchart LR
 
 | 編號 | 交付物名稱 | 對應步驟卡 | 標準實體檔案路徑與檔名（皆位於 `delivery-output/`） | 驗收人 |
 |---|---|---|---|---|
-| **DL-01** | 程式掃描結果／相依關係圖 | G | `delivery-output/DL-01-scan-summary.md` | DEV |
-| **DL-02** | 資料字典 | H | `delivery-output/DL-02-data-dictionary.json` | BIZ、DEV |
-| **DL-03** | 流程分析報告 | I | `delivery-output/DL-03-CHKRTN01-explanation.md` | BIZ |
-| **DL-04** | 影響分析報告 | J | `delivery-output/DL-04-impact-analysis.md` | 專案負責人 |
-| **DL-05** | 實施計畫 | K | `delivery-output/DL-05-implementation-plan.md` | 專案負責人 |
-| **DL-06** | 程式修改建議與審查紀錄 | L | `delivery-output/DL-06-review-record.md` | DEV |
-| **DL-07** | 主機測試結果 | M | `delivery-output/DL-07-test-results.md` | MF |
-| **DL-08** | 成果回顧報告 | N | `delivery-output/DL-08-POC-review-report.md` | 專案負責人 |
+| **DL-01** | 程式掃描結果／相依關係圖 | G | `DL-01-scan-summary.md` | DEV |
+| **DL-02** | 資料字典 | H | `DL-02-data-dictionary.json` | BIZ、DEV |
+| **DL-03** | 流程分析報告 | I | `DL-03-CHKRTN01-explanation.md` | BIZ |
+| **DL-04** | 影響分析報告 | J | `DL-04-impact-analysis.md` | 專案負責人 |
+| **DL-05** | 實施計畫 | K | `DL-05-implementation-plan.md` | 專案負責人 |
+| **DL-06** | 程式修改建議與審查紀錄 | L | `DL-06-review-record.md` | DEV |
+| **DL-07** | 主機測試結果 | M | `DL-07-test-results.md` | MF |
+| **DL-08** | 成果回顧報告 | N | `DL-08-POC-review-report.md` | 專案負責人 |
 
 ---
 

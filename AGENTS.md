@@ -9,9 +9,9 @@
 | A、B、C、D | 👤 人工 | 只可起草文件（說明文字、端點清單）。不可代為核可或操作。 | — |
 | E | 🤖 BOB | 依下方「步驟卡 E」自動執行並輸出報告。 | 步驟卡 E |
 | F | 🤖 BOB | 說明代表程式，標註行號。 | 步驟卡 F–N 補充規則 |
-| G | 🛠 PPZ | `scan_program`（需使用者明確同意）、`get_program_dependencies`、`get_paragraphs`。 | 同上 |
-| H | 🔁 WF＋🛠 PPZ | 資料字典技能、`get_variables`。 | 同上 |
-| I | 🔁 WF＋🛠 PPZ | Explain code、Generate program documentation、Generate application documentation、Extract business rules；控制流程與資料流程工具。 | 同上 |
+| G | 🛠 PPZ | 掃描程式碼、建立分析資料庫與相依性查詢（由 Bob 在後台自動呼叫剖析服務）。 | 同上 |
+| H | 🔁 WF＋🛠 PPZ | 資料字典工作流程與斜線命令（/data-dictionary-management）。 | 同上 |
+| I | 🔁 WF＋🛠 PPZ | Explain code、Generate program documentation、Generate application documentation、Extract business rules 引導式工作流程。 | 同上 |
 | J | 🔁 WF＋🛠 PPZ | 影響分析技能（本機模式）。 | 同上 |
 | K | 🔁 WF | 實施規劃技能。 | 同上 |
 | L | 🤖 BOB（Z Code） | 依已核准計畫修改，產生 Diff。 | 同上 |
@@ -23,7 +23,7 @@
 - 已知答案文件只在步驟卡 N 讀取。更早讀取或被提供時，停止並告知使用者。
 - 無法確認的項目（動態 CALL、缺失來源、外部介面）標示為「邊界」。未經主機測試者標示為「尚未驗證」。
 - 發現疑似未脫敏的個資（帳號、身分證號、卡號）→ 立即停止，通知 SEC。
-- 未經使用者明確同意，不可執行 `scan_program`。
+- 未經使用者明確同意，不可呼叫後台之掃描建庫服務。
 - Z Architect 模式不可修改程式碼。需要修改時，請使用者切換到 Z Code。
 - 不可執行或建議 `/init` 覆蓋本檔。本檔已含 POC 規則。使用者要執行 `/init` 時，先提醒備份或確認版控。
 - 不可使用 `/explain` 指令與 explain 技能。3.0.20 以上版本不支援。整支程式說明改用 Explain code 工作流程。
@@ -310,20 +310,20 @@ POC-SOURCE/
 
 ## 步驟卡 G：掃描建庫（🛠 PPZ）
 
-- 前置：步驟卡 F 已通過，且使用者**明確同意**掃描。
+- 前置：步驟卡 F 已通過，且使用者**明確同意**對工作區進行掃描建庫。
 - 先檢查 `.bobz/local-settings.json` 的 `databaseLocation`。已有可用資料庫則不重複掃描。
-- 無資料庫時，詢問使用者是否同意。取得同意後，對**上層資料夾**執行 `scan_program`。
-- 以 `get_program_dependencies` 與 `get_paragraphs` 抽查數支程式，並輸出結果摘要（DL-01）。`get_program_dependencies` 未列於官方工具表。無法使用時，改用 `execute_sql_query` 查詢呼叫關係，並在摘要註明。
+- 無資料庫時，主動以自然語言詢問使用者是否同意。取得明確同意後，自動對**上層資料夾**呼叫掃描建庫服務。
+- 透過相依性查詢與 Paragraph 結構分析抽查數支程式，並輸出實體結果摘要（DL-01），確認已在 `.bobz/local-settings.json` 正確更新資料庫路徑。若相依性剖析器出錯，改用 `execute_sql_query` 查詢呼叫關係。
 - 使用者拒絕掃描 → 請使用者切換到 Z Architect，改用 `zopeneditor-cobol-get-program-control-flow` 與 `zopeneditor-cobol-get-data-flow` 做有限分析，並在報告註明限制。
 
 ## 步驟卡 H：資料字典（🔁 WF＋🛠 PPZ）
 
-- 使用 `data-dictionary-management` 技能（Z Code）。使用者也可以輸入 `/data-dictionary-management` 或啟動 Generate data dictionary 工作流程。
-- `scan_program` 必須先於 `get_variables` 執行。
-- 預設取前 15 個關鍵變數，可調整為 10–20。
-- 依三階段進行：選擇變數 → 展開縮寫 → 儲存。
-- `get_variables` 回傳錯誤 → 停止並回報完整錯誤。**不可**人工猜測取代。
-- 儲存後確認 `bobz/DD.json` 存在，且每個項目的 `scope` 含目標程式名稱。
+- 使用 `data-dictionary-management` 技能（Z Code）。在對話框中輸入 `/data-dictionary-management`，或點選 **Start Workflow** 選擇 **Generate data dictionary**。
+- 專案程式碼必須已先完成「掃描建庫」，始可進行關鍵變數提取。
+- 預設提取前 15 個關鍵變數，可調整為 10–20。
+- 依三階段引導進行：選擇變數 → 展開縮寫 → 儲存字典。
+- 變數提取出錯時，必須立即停止並回報完整剖析錯誤。**不可**以人工猜測取代。
+- 儲存後，必須確認實體檔案 `bobz/DD.json` 存在，且確認每個項目的 `scope` 陣列含目標程式名稱。
 - 關鍵欄位語意（手續費、金額等）標註「待 BIZ 簽核」。
 
 ## 步驟卡 I：流程分析與文件（🔁 WF＋🛠 PPZ）

@@ -313,7 +313,7 @@ POC-SOURCE/
 - 前置：步驟卡 F 已通過，且使用者**明確同意**對工作區進行掃描建庫。
 - 先檢查 `.bobz/local-settings.json` 的 `databaseLocation`。已有可用資料庫則不重複掃描。
 - 無資料庫時，主動以自然語言詢問使用者是否同意。取得明確同意後，自動對**上層資料夾**呼叫掃描建庫服務。
-- 透過相依性查詢與 Paragraph 結構分析抽查數支程式，並輸出實體結果摘要（DL-01），確認已在 `.bobz/local-settings.json` 正確更新資料庫路徑。若相依性剖析器出錯，改用 `execute_sql_query` 查詢呼叫關係。
+- 透過相依性查詢與 Paragraph 結構分析抽查數支程式，並輸出實體結果摘要 **DL-01**（存檔於 `delivery-output/DL-01-scan-summary.md`），確認已在 `.bobz/local-settings.json` 正確更新資料庫路徑。若相依性剖析器出錯，改用 `execute_sql_query` 查詢呼叫關係。
 - 使用者拒絕掃描 → 請使用者切換到 Z Architect，改用 `zopeneditor-cobol-get-program-control-flow` 與 `zopeneditor-cobol-get-data-flow` 做有限分析，並在報告註明限制。
 
 ## 步驟卡 H：資料字典（🔁 WF＋🛠 PPZ）
@@ -322,8 +322,8 @@ POC-SOURCE/
 - 專案程式碼必須已先完成「掃描建庫」，始可進行關鍵變數提取。
 - 預設提取前 15 個關鍵變數，可調整為 10–20。
 - 依三階段引導進行：選擇變數 → 展開縮寫 → 儲存字典。
-- 變數提取出錯時，必須立即停止並回報完整剖析錯誤。**不可**以人工猜測取代。
-- 儲存後，必須確認實體檔案 `bobz/DD.json` 存在，且確認每個項目的 `scope` 陣列含目標程式名稱。
+- 變數提取出錯時，必須立即停止並回報完整剖析錯誤. **不可**以人工猜測取代。
+- 儲存後，必須確認實體檔案已成功寫入 `delivery-output/DL-02-data-dictionary.json`，且確認每個項目的 `scope` 陣列含目標程式名稱。
 - 關鍵欄位語意（手續費、金額等）標註「待 BIZ 簽核」。
 
 ## 步驟卡 I：流程分析與文件（🔁 WF＋🛠 PPZ）

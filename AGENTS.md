@@ -1,8 +1,40 @@
-# Bob + PPZ POC — 步驟卡 E：程式碼交付完整性檢查 Agent 指令
+# Bob + PPZ POC — Agent 指令（步驟卡 E–N）
+
+## 總則：執行方式分工
+
+對應《operation-manual/cheatsheet_STE_BOB-PPZ.md》第 1.4 節。
+
+| 步驟卡 | 執行方式 | Agent 動作 | 本文件章節 |
+|---|---|---|---|
+| A、B、C、D | 👤 人工 | 只可起草文件（說明文字、端點清單）。不可代為核可或操作。 | — |
+| E | 🤖 BOB | 依下方「步驟卡 E」自動執行並輸出報告。 | 步驟卡 E |
+| F | 🤖 BOB | 說明代表程式，標註行號。 | 步驟卡 F–N 補充規則 |
+| G | 🛠 PPZ | `scan_program`（需使用者明確同意）、`get_program_dependencies`、`get_paragraphs`。 | 同上 |
+| H | 🔁 WF＋🛠 PPZ | 資料字典技能、`get_variables`。 | 同上 |
+| I | 🔁 WF＋🛠 PPZ | Explain code、Generate program documentation、Generate application documentation、Extract business rules；控制流程與資料流程工具。 | 同上 |
+| J | 🔁 WF＋🛠 PPZ | 影響分析技能（本機模式）。 | 同上 |
+| K | 🔁 WF | 實施規劃技能。 | 同上 |
+| L | 🤖 BOB（Z Code） | 依已核准計畫修改，產生 Diff。 | 同上 |
+| M | 👤 人工（Bob 輔助） | 只產生清單、判讀訊息、比對結果。不執行主機作業。 | 同上 |
+| N | 🤖 輔助＋👤 人工 | 計算與彙整。不代為簽收或刪除資料。 | 同上 |
+
+**共通規則**
+- 一律使用繁體中文回應。
+- 已知答案文件只在步驟卡 N 讀取。更早讀取或被提供時，停止並告知使用者。
+- 無法確認的項目（動態 CALL、缺失來源、外部介面）標示為「邊界」。未經主機測試者標示為「尚未驗證」。
+- 發現疑似未脫敏的個資（帳號、身分證號、卡號）→ 立即停止，通知 SEC。
+- 未經使用者明確同意，不可執行 `scan_program`。
+- Z Architect 模式不可修改程式碼。需要修改時，請使用者切換到 Z Code。
+- 不可執行或建議 `/init` 覆蓋本檔。本檔已含 POC 規則。使用者要執行 `/init` 時，先提醒備份或確認版控。
+- 不可使用 `/explain` 指令與 explain 技能。3.0.20 以上版本不支援。整支程式說明改用 Explain code 工作流程。
+- 模式與工具對照（官方）：Explain code、Generate program documentation、Extract business rules、Generate data dictionary 屬 Z Code。Generate application documentation、`zopeneditor-*` 流程工具、影響分析、實施計畫屬 Z Architect。目前模式不符時，請使用者切換模式。
+
+---
+
+# 步驟卡 E：程式碼交付完整性檢查
 
 ## 指令說明
 
-本文件供 **步驟卡 E** 使用。  
 當使用者說「幫我檢查客戶交付的程式碼」或「確認交付包是否完整」時，
 **照以下步驟執行，最後輸出結構化報告**，不需等待使用者逐步引導。
 
@@ -259,4 +291,83 @@ POC-SOURCE/
 
 ---
 
-*本指令對應《Bob-PPZ_POC_現場操作小抄.md》步驟卡 E，由 BOB 角色執行，DEV 提供交付包路徑，MF 確認版本一致性。*
+*本段對應《cheatsheet_STE_BOB-PPZ.md》步驟卡 E，由 BOB 角色執行，DEV 提供交付包路徑，MF 確認版本一致性。*
+
+---
+
+# 步驟卡 F–N 補充規則
+
+> 以下規則適用於使用者提出對應需求時。每張卡先確認前置條件，未滿足則停止並告知使用者。
+
+## 步驟卡 F：代表程式試跑（🤖 BOB，Z Code）
+
+- 前置：步驟卡 E 結論為「通過」或「有條件通過」。
+- 前置：使用者已在此工作區執行過 `/init`（官方要求）。`AGENTS.md` 已存在時，不可覆蓋。
+- 先呼叫 `data-dictionary-management` 技能，再讀取 `.cbl`。
+- 說明程式用途、主要處理步驟、關鍵業務規則。**每一項標註行號或段落名稱**。
+- 無法確認的項目標示「邊界」。不推測。
+- 只讀不改。
+
+## 步驟卡 G：掃描建庫（🛠 PPZ）
+
+- 前置：步驟卡 F 已通過，且使用者**明確同意**掃描。
+- 先檢查 `.bobz/local-settings.json` 的 `databaseLocation`。已有可用資料庫則不重複掃描。
+- 無資料庫時，詢問使用者是否同意。取得同意後，對**上層資料夾**執行 `scan_program`。
+- 以 `get_program_dependencies` 與 `get_paragraphs` 抽查數支程式，並輸出結果摘要（DL-01）。`get_program_dependencies` 未列於官方工具表。無法使用時，改用 `execute_sql_query` 查詢呼叫關係，並在摘要註明。
+- 使用者拒絕掃描 → 請使用者切換到 Z Architect，改用 `zopeneditor-cobol-get-program-control-flow` 與 `zopeneditor-cobol-get-data-flow` 做有限分析，並在報告註明限制。
+
+## 步驟卡 H：資料字典（🔁 WF＋🛠 PPZ）
+
+- 使用 `data-dictionary-management` 技能（Z Code）。使用者也可以輸入 `/data-dictionary-management` 或啟動 Generate data dictionary 工作流程。
+- `scan_program` 必須先於 `get_variables` 執行。
+- 預設取前 15 個關鍵變數，可調整為 10–20。
+- 依三階段進行：選擇變數 → 展開縮寫 → 儲存。
+- `get_variables` 回傳錯誤 → 停止並回報完整錯誤。**不可**人工猜測取代。
+- 儲存後確認 `bobz/DD.json` 存在，且每個項目的 `scope` 含目標程式名稱。
+- 關鍵欄位語意（手續費、金額等）標註「待 BIZ 簽核」。
+
+## 步驟卡 I：流程分析與文件（🔁 WF＋🛠 PPZ）
+
+- 整支程式說明 → 啟動 Explain code 工作流程（`explain-workflow`，Z Code）。詢問視角：架構師／業務／開發者。**不可**用 `/explain`。
+- 正式程式文件 → 啟動 Generate program documentation 工作流程（`docgen-workflow`，Z Code）。
+- 業務規則 → 啟動 Extract business rules 工作流程（`brd-workflow`，Z Code）。
+- 跨程式文件 → 啟動 Generate application documentation 工作流程（`wiki-workflow`，**Z Architect**）。輸入是程式文件的 Markdown，需先完成程式文件。
+- 段落流程 → `zopeneditor-cobol-get-program-control-flow`。欄位追蹤 → `zopeneditor-cobol-get-data-flow`。這兩個工具只在 **Z Architect** 提供。
+- 動態 CALL 無法解析 → 列為「邊界」，不推斷目標。
+
+## 步驟卡 J：影響分析（🔁 WF＋🛠 PPZ）
+
+- 一律使用 `impact-analysis` 技能（Z Architect），**本機（Local）模式**。使用者也可以輸入 `/impact-analysis`。
+- 前置：變更需求已明確（現況、期望、驗收標準）。**不可**讀取已知答案文件。
+- 使用 `execute_sql_query` 與資料流程追蹤找出受影響的程式、COPY、表、檔案、JCL。
+- 詢問是否另用 Z Understand 時，預設回答「否」，除非使用者另有指示。
+- 輸出 `IMPACT-ANALYSIS.md`（≤ 1000 行），含相依圖、風險表、信心等級，並標示邊界與尚未驗證項目。
+
+## 步驟卡 K：實施計畫（🔁 WF）
+
+- 一律使用 `implementation-planning` 技能（Z Architect）。使用者也可以輸入 `/implementation-planning`。
+- 前置：步驟卡 J 已完成；所有涉及的程式都有資料字典，缺少者先補建。
+- 計畫必須含：目標與非目標、工作流、執行順序、受影響元件、風險、**測試策略**（含邊界值案例）、**回退計畫**。
+- 輸出 `implementation-plan.md`（≤ 1000 行）。計畫經 DEV、MF、BIZ 核准前，不可進入步驟卡 L。
+
+## 步驟卡 L：程式修改（🤖 BOB，Z Code）
+
+- 前置：實施計畫已核准，原始碼已備份或在版本控制下。
+- Z Architect 模式**不可**改程式。需修改時切換到 Z Code。
+- 只修改計畫範圍內的內容。維持固定格式 7–72 欄。
+- 提供差異供 DEV 逐項審閱。**不可**建議整批接受。
+- 新增欄位時，更新資料字典。
+
+## 步驟卡 M：編譯與測試（👤 人工，Bob 輔助）
+
+- Bob **不執行**主機編譯、提交 JCL 或回傳檔案，由 MF 操作。
+- 可產生：編譯＋測試步驟清單、每個案例的預期結果（表格）。
+- 可判讀 MF 回傳的編譯訊息與 SYSOUT，列出通過、失敗、尚未驗證項目（DL-07）。
+- 貼入內容若含敏感資料 → 立即停止，通知 SEC。
+
+## 步驟卡 N：成果回顧（🤖 輔助＋👤 人工）
+
+- 已知答案文件**只在此步驟**才可讀取。
+- 計算 Precision（找對 ÷ 工具列出）與 Recall（找對 ÷ 已知應找）。**計算前雙重核對數量**。
+- 如實呈現結果。**不可**為符合門檻（80%）而調整答案或事先承諾節省比例。
+- 可產出成果回顧初稿；簽收與資料刪除由人工完成。

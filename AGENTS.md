@@ -2,7 +2,7 @@
 
 ## 總則：執行方式分工
 
-對應《operation-manual/cheatsheet.md》第 1.4 節。
+對應《OP-MANUAL.md》第 1.4 節。
 
 | 步驟卡 | 執行方式 | Agent 動作 | 本文件章節 |
 |---|---|---|---|

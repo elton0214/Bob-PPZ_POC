@@ -1,7 +1,7 @@
 # Bob + PPZ POC — 專案資料夾說明
 
 本文件說明專案資料夾在 POC 前後的樣貌，以及各步驟卡（E–N）對檔案系統的影響。
-規則依據：[`AGENTS.md`](AGENTS.md)、[`operation-manual/cheatsheet.md`](operation-manual/cheatsheet.md)。
+規則依據：[`AGENTS.md`](AGENTS.md)、[`OP-MANUAL.md`](OP-MANUAL.md)。
 參考來源與證據對照：[`RESOURCES.md`](RESOURCES.md)。
 
 ## 一、Before（POC 開始前的狀態）
@@ -10,8 +10,7 @@
 Bob-PPZ_POC/
 ├── AGENTS.md                      ← 已存在（POC 規則，不可被 /init 覆蓋）
 ├── README.md                      ← 本文件
-├── operation-manual/
-│   └── cheatsheet.md
+├── OP-MANUAL.md
 ├── CR-template/
 │   ├── CR-template.md
 │   └── CR-template_sample1.md
@@ -28,7 +27,7 @@ Bob-PPZ_POC/
 Bob-PPZ_POC/
 ├── AGENTS.md                      ← 不變（步驟卡 F 的 /init 不可覆蓋）
 ├── README.md
-├── operation-manual/cheatsheet.md
+├── OP-MANUAL.md
 ├── CR-template/…
 ├── client-discussion-doc/…
 │

@@ -2,6 +2,7 @@
 
 本文件說明專案資料夾在 POC 前後的樣貌，以及各步驟卡（E–N）對檔案系統的影響。
 規則依據：[`AGENTS.md`](AGENTS.md)、[`operation-manual/cheatsheet.md`](operation-manual/cheatsheet.md)。
+參考來源與證據對照：[`RESOURCES.md`](RESOURCES.md)。
 
 ## 一、Before（POC 開始前的狀態）
 

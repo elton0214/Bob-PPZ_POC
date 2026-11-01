@@ -291,7 +291,7 @@ POC-SOURCE/
 
 ---
 
-*本段對應《cheatsheet_STE_BOB-PPZ.md》步驟卡 E，由 BOB 角色執行，DEV 提供交付包路徑，MF 確認版本一致性。*
+*本段對應《OP-MANUAL.md》步驟卡 E，由 BOB 角色執行，DEV 提供交付包路徑，MF 確認版本一致性。*
 
 ---
 

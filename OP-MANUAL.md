@@ -506,8 +506,7 @@ flowchart LR
 3. 在差異檢視畫面逐項快速確認。
 4. 請 BIZ 簽核關鍵欄位（手續費、金額等）的業務語意。
 5. 將工作字典複製到交付資料夾（僅為方便交付；`bobz/DD.json` 仍是 Bob 背景讀取的來源）。
-   - ⌨️ **指令**（PowerShell，於工作區根目錄執行）：`Copy-Item -Path "bobz/DD.json" -Destination "delivery-output/DL-02-data-dictionary.json" -Force`
-   - 💬 **Bob 提示詞**（擇一）：`請執行 Copy-Item -Path "bobz/DD.json" -Destination "delivery-output/DL-02-data-dictionary.json" -Force，並確認兩個檔案內容一致。`
+   - 💬 **Bob 提示詞**：`請幫我複製一份 "bobz/DD.json" 至 "delivery-output/DL-02-data-dictionary.json"，並改成 human-friendly 的格式。`
 
 **預期結果**
 *   **【實體檔案產出與更新】**：

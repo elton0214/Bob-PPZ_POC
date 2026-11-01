@@ -324,7 +324,7 @@ POC-SOURCE/
 - 依三階段引導進行：選擇變數 → 展開縮寫 → 儲存字典。
 - 變數提取出錯時，必須立即停止並回報完整剖析錯誤. **不可**以人工猜測取代。
 - 儲存後，必須確認實體檔案已成功寫入 `bobz/DD.json`（工作字典，技能讀寫來源），且確認每個項目的 `scope` 陣列含目標程式名稱。
-- 確認後，執行複製指令（僅為方便交付）：`Copy-Item -Path "bobz/DD.json" -Destination "delivery-output/DL-02-data-dictionary.json" -Force`，並確認兩檔內容一致。`bobz/DD.json` 仍是唯一的工作來源，不可直接編輯 `delivery-output/` 內的複本。
+- 確認後，將工作字典複製一份至 `delivery-output/DL-02-data-dictionary.json` 並改為 human-friendly 格式（僅為方便交付）。`bobz/DD.json` 仍是唯一的工作來源，不可直接編輯 `delivery-output/` 內的複本。
 - 關鍵欄位語意（手續費、金額等）標註「待 BIZ 簽核」。
 
 ## 步驟卡 I：流程分析與文件（🔁 WF＋🛠 PPZ）
@@ -357,7 +357,7 @@ POC-SOURCE/
 - Z Architect 模式**不可**改程式。需修改時切換到 Z Code。
 - 只修改計畫範圍內的內容。維持固定格式 7–72 欄。
 - 提供差異供 DEV 逐項審閱。**不可**建議整批接受。
-- 新增欄位時，更新 `bobz/DD.json`，再重新執行 `Copy-Item` 同步到 `delivery-output/DL-02-data-dictionary.json`。
+- 新增欄位時，更新 `bobz/DD.json`，再同步至 `delivery-output/DL-02-data-dictionary.json`（human-friendly 格式）。
 
 ## 步驟卡 M：編譯與測試（👤 人工，Bob 輔助）
 

@@ -2,7 +2,10 @@
 
 本文件說明專案資料夾在 POC 前後的樣貌，以及各步驟卡（E–N）對檔案系統的影響。
 規則依據：[`AGENTS.md`](AGENTS.md)、[`OP-MANUAL.md`](OP-MANUAL.md)。
-參考來源與證據對照：[`RESOURCES.md`](RESOURCES.md)。
+參考來源與證據對照：[`RESOURCES.md`](RESOURCES.md)。CR-template 目前僅供參考，暫無強制填寫要求。
+
+## 階段概覽
+參考 OP-MANUAL.md: "1.1 端到端流程"。
 
 ## 一、Before（POC 開始前的狀態）
 

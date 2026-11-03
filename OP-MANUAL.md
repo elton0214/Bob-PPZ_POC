@@ -429,6 +429,7 @@ flowchart LR
 - D2 已核可。
 - SEC 已核可脫敏規則。
 - 已決定工作區位置（例如 `D:\POC-SOURCE`）。
+- 目前不在主線分支（`main` / `master`）。
 - （建議）已依第 0.5 節透過 Bob 產生專屬實例化手冊 `OP-MANUAL_UB_CR.md`。
 
 **步驟**

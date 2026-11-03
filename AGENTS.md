@@ -60,7 +60,8 @@
 
 執行前先確認：
 1. **D2 已核可**（允許程式下載至 Bob + PPZ 環境）— 若否，停止並告知使用者
-2. 請使用者提供交付包根目錄路徑（例如 `D:\POC-SOURCE` 或 workspace 內的相對路徑）
+2. **不在主線分支**（`git branch --show-current` 不是 `main` / `master`）— 若是，停止並告知使用者
+3. 請使用者提供交付包根目錄路徑（例如 `D:\POC-SOURCE` 或 workspace 內的相對路徑）
 
 ---
 

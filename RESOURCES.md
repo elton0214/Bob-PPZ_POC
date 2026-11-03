@@ -35,10 +35,8 @@
   IBM 團隊整理的網路與工作站建議。Use for: 16 GB／4 核心／20 GB 屬「規劃建議」，不是官方最低值。
 - [IBMid 註冊操作指南](client-discussion-doc/UB_IBM_Bob_IBMid註冊操作指南.pdf)
   註冊步驟。Use for: 密碼 12–63 字元、7 位數驗證碼 30 分鐘失效、「您似乎沒有任何產品」屬正常。
-- [變更請求範本](CR/CR-template.md)
-  CR 欄位定義。Use for: 附錄 A 交付清單格式、DL-01 至 DL-08、風險 R-01 至 R-09。
-- [變更請求填寫示範](CR/CR-template_sample1.md)
-  **全部是虛構資料。** Use for: 理解欄位怎麼填；`CHKRTN01`、150／300、14 天刪除都不可當事實。
+- [變更需求單範例](CR/CR-sample1.md)
+  變更需求單（CR-2026-CHK-008：退票手續費計算規則分級調整與手續費減免連動）。Use for: POC 變更分析與操作手冊實例化輸入。
 
 ## Wisdom (Communities)
 

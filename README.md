@@ -19,8 +19,7 @@ Bob-PPZ_POC/
 ├── README.md                      ← 本文件
 ├── OP-MANUAL.md
 ├── CR/
-│   ├── CR-template.md
-│   └── CR-template_sample1.md
+│   └── CR-sample1.md                  ← 變更需求單（退票手續費計算規則分級調整）
 ├── client-discussion-doc/         ← 訪談／註冊／防火牆文件（PDF、PPTX）
 ├── POC-SOURCE/                    ← 空（等待客戶交付包解壓縮）
 ├── delivery-output/               ← 空（等待 DL-xx 交付物）

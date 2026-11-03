@@ -24,6 +24,8 @@ Bob-PPZ_POC/
 └── .git/
 ```
 
+> **版本控制建議**：收到客戶交付物時，建議由 `master` 建立本機專屬分支（如 `git checkout -b cr/ub-fee-change`），並於生成手冊與解壓縮後建立基準 Commit，以隔離通用範本。版控僅限本機，不可 push 至外部平台。
+
 ## 二、After（全部步驟卡 E–N 完成後的預期狀態）
 
 ```

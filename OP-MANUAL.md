@@ -117,6 +117,9 @@ git checkout -b cr/<填入實際CR主題，例如：ub-fee-change>
 
 #### 步驟 3：建立基準線（Baseline）Commit
 在專屬手冊生成完畢，且**步驟 E 完成代碼解壓至 `POC-SOURCE/` 後**，執行基準 Commit 鎖定初始狀態：
+
+需手動填入參數：<客戶交付壓縮檔名>
+
 ```powershell
 git add .
 git commit -m "baseline: add OP-MANUAL_<客戶交付壓縮檔名>.md and import customer source code"

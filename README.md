@@ -30,7 +30,8 @@ Bob-PPZ_POC/
 Bob-PPZ_POC/
 ├── AGENTS.md                      ← 不變（步驟卡 F 的 /init 不可覆蓋）
 ├── README.md
-├── OP-MANUAL.md
+├── OP-MANUAL.md                   ← 通用手冊模板
+├── OP-MANUAL_UB_CR.md             ← 0.5 實例化手冊（收到 CR 單與 Zip 後由 Bob 填入參數生成）
 ├── CR-template/…
 ├── client-discussion-doc/…
 │
@@ -75,7 +76,9 @@ Bob-PPZ_POC/
 
 ```mermaid
 flowchart LR
-    E[E 交付檢查] -->|解壓縮 + 報告| P[POC-SOURCE/ + DL-00]
+    P0[0.5 手冊實例化] -->|填入參數| OP[OP-MANUAL_UB_CR.md]
+    OP --> E[E 交付檢查]
+    E -->|解壓縮 + 報告| P[POC-SOURCE/ + DL-00]
     F[F 試跑] -->|/init 不覆蓋| A[AGENTS.md 不變]
     G[G 掃描建庫] --> S[.bobz/local-settings.json + SQLite DB + DL-01]
     H[H 資料字典] --> D[bobz/DD.json → 複製為 DL-02]
@@ -89,6 +92,7 @@ flowchart LR
 
 | 步驟 | 新增 | 修改 |
 |---|---|---|
+| 0.5 | `OP-MANUAL_UB_CR.md`（專屬實例化手冊） | — |
 | E | `POC-SOURCE/*`、`DL-00` | — |
 | F | 無（只讀） | `AGENTS.md` 不可被覆蓋 |
 | G | SQLite 資料庫、`DL-01` | `.bobz/local-settings.json` |

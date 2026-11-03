@@ -850,7 +850,7 @@ flowchart LR
 
 | 編號 | 交付物名稱 | 對應步驟卡 | 標準實體檔案路徑與檔名（皆位於 `delivery-output/`） | 驗收人 |
 |---|---|---|---|---|
-| **DL-00** | 交付完整性檢查報告 | E | `DL-00-delivery-check.md` | DEV、MF |
+| **DL-00** | 交付完整性檢查報告 | F | `DL-00-delivery-check.md` | DEV、MF |
 | **DL-01** | 程式掃描結果／相依關係圖 | G | `DL-01-scan-summary.md` | DEV |
 | **DL-02** | 資料字典 | H | `DL-02-data-dictionary.json`（由 `bobz/DD.json` 複製而來，僅供交付） | BIZ、DEV |
 | **DL-03** | 流程分析報告 | I | `DL-03-〈變更目標程式〉-explanation.md` | BIZ |

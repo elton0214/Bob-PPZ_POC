@@ -2,7 +2,7 @@
 
 本文件說明專案資料夾在 POC 前後的樣貌，以及各步驟卡（E–N）對檔案系統的影響。
 規則依據：[`AGENTS.md`](AGENTS.md)、[`OP-MANUAL.md`](OP-MANUAL.md)。
-參考來源與證據對照：[`RESOURCES.md`](RESOURCES.md)。CR-template 目前僅供參考，暫無強制填寫要求。
+參考來源與證據對照：[`RESOURCES.md`](RESOURCES.md)。CR 目錄範本目前僅供參考，暫無強制填寫要求。
 
 ## 階段概覽
 參考 OP-MANUAL.md: "1.1 端到端流程"。
@@ -14,7 +14,7 @@ Bob-PPZ_POC/
 ├── AGENTS.md                      ← 已存在（POC 規則，不可被 /init 覆蓋）
 ├── README.md                      ← 本文件
 ├── OP-MANUAL.md
-├── CR-template/
+├── CR/
 │   ├── CR-template.md
 │   └── CR-template_sample1.md
 ├── client-discussion-doc/         ← 訪談／註冊／防火牆文件（PDF、PPTX）
@@ -34,7 +34,7 @@ Bob-PPZ_POC/
 ├── README.md
 ├── OP-MANUAL.md                   ← 通用手冊模板
 ├── OP-MANUAL_UB_CR.md             ← 0.5 實例化手冊（收到 CR 單與 Zip 後由 Bob 填入參數生成）
-├── CR-template/…
+├── CR/…
 ├── client-discussion-doc/…
 │
 ├── UNION_BANK_POC.zip             ← 步驟 E：客戶交付壓縮包（放置後解壓）

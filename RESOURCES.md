@@ -25,7 +25,7 @@
 - [Installation](https://bob.ibm.com/docs/ide/getting-started/install)
   官方安裝需求。Use for: 官方最低 4 GB RAM（建議 8 GB）、500 MB 磁碟。
 
-### 客戶與 IBM 團隊文件（本專案 `client-discussion-doc/`、`CR-template/`）
+### 客戶與 IBM 團隊文件（本專案 `client-discussion-doc/`、`CR/`）
 
 - [聯邦銀行 Bob PP4Z PoC 需求訪談會議](client-discussion-doc/20260917聯邦銀行_Bob_PP4Z_PoC_需求訪談會議.pdf)
   POC 目標與成功標準。Use for: D1／D2／D3 三項決策、五個階段、Precision／Recall 各 ≥80%（建議門檻）、不預先承諾節省比例。
@@ -35,9 +35,9 @@
   IBM 團隊整理的網路與工作站建議。Use for: 16 GB／4 核心／20 GB 屬「規劃建議」，不是官方最低值。
 - [IBMid 註冊操作指南](client-discussion-doc/UB_IBM_Bob_IBMid註冊操作指南.pdf)
   註冊步驟。Use for: 密碼 12–63 字元、7 位數驗證碼 30 分鐘失效、「您似乎沒有任何產品」屬正常。
-- [變更請求範本](CR-template/CR-template.md)
+- [變更請求範本](CR/CR-template.md)
   CR 欄位定義。Use for: 附錄 A 交付清單格式、DL-01 至 DL-08、風險 R-01 至 R-09。
-- [變更請求填寫示範](CR-template/CR-template_sample1.md)
+- [變更請求填寫示範](CR/CR-template_sample1.md)
   **全部是虛構資料。** Use for: 理解欄位怎麼填；`CHKRTN01`、150／300、14 天刪除都不可當事實。
 
 ## Wisdom (Communities)

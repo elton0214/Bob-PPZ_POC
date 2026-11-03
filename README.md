@@ -7,7 +7,7 @@
 ## 階段概覽（核心原則）
 
 - **預期客戶提供**：CR 需求變更單（email / Word）＋ 程式碼壓縮包（`.zip`）
-- **現場操作流程**：Git 開新分支，執行 `OP-MANUAL_xxx.md`（僅 步驟卡 0.5 ＋ E – N）
+- **現場操作流程**：Git 開新分支，執行 `OP-MANUAL_xxx.md`（僅 步驟卡 E – N）
     - 階段流程參考：[`OP-MANUAL.md`](OP-MANUAL.md) "1.1 端到端流程"。
 - **預期交付**：可參考本文件「[二、After](#二after全部步驟卡-en-完成後的預期狀態)」交付物清單（`delivery-output/` 之 DL-00 至 DL-08）＋ 1 份 Word 報告（各步驟截圖存證）
 
@@ -33,16 +33,16 @@ Bob-PPZ_POC/
 
 ```
 Bob-PPZ_POC/
-├── AGENTS.md                      ← 不變（步驟卡 F 的 /init 不可覆蓋）
+├── AGENTS.md                      ← 不變（/init 不可覆蓋）
 ├── README.md
 ├── OP-MANUAL.md                   ← 通用手冊模板
-├── OP-MANUAL_UB_CR.md             ← 0.5 實例化手冊（收到 CR 單與 Zip 後由 Bob 填入參數生成）
+├── OP-MANUAL_UB_CR.md             ← 步驟卡 E 實例化手冊（收到 CR 單與 Zip 後由 Bob 填入參數生成）
 ├── CR/…
 ├── client-discussion-doc/…
 │
-├── UNION_BANK_POC.zip             ← 步驟 E：客戶交付壓縮包（放置後解壓）
+├── UNION_BANK_POC.zip             ← 步驟 F：客戶交付壓縮包（放置後解壓）
 │
-├── POC-SOURCE/                    ← 步驟 E：解壓縮結果
+├── POC-SOURCE/                    ← 步驟 F：解壓縮結果
 │   ├── cobol/      (*.cbl, *.cob)   ← 步驟 L 修改 CHKRTN01.cbl
 │   ├── copybook/   (*.cpy)          ← 步驟 L 修改 CHKFEE01.cpy
 │   ├── jcl/        (*.jcl)
@@ -63,7 +63,7 @@ Bob-PPZ_POC/
 ├── implementation-plan.md         ← 步驟 K 原始輸出（≤1000 行），歸檔為 DL-05
 │
 └── delivery-output/               ← 所有交付物集中處
-    ├── DL-00-delivery-check.md           (E 交付完整性檢查報告，唯一存放位置)
+    ├── DL-00-delivery-check.md           (F 交付完整性檢查報告，唯一存放位置)
     ├── DL-01-scan-summary.md             (G 掃描摘要／相依關係)
     ├── DL-02-data-dictionary.json        (H 由 bobz/DD.json 複製，僅供交付)
     ├── DL-03-CHKRTN01-explanation.md     (I 流程分析／業務規則)
@@ -81,11 +81,11 @@ Bob-PPZ_POC/
 
 ```mermaid
 flowchart LR
-    P0[0.5 手冊實例化] -->|填入參數| OP[OP-MANUAL_UB_CR.md]
-    OP --> E[E 交付檢查]
-    E -->|解壓縮 + 報告| P[POC-SOURCE/ + DL-00]
-    F[F 試跑] -->|/init 不覆蓋| A[AGENTS.md 不變]
-    G[G 掃描建庫] --> S[.bobz/local-settings.json + SQLite DB + DL-01]
+    E[E 手冊實例化] -->|填入參數| OP[OP-MANUAL_UB_CR.md]
+    OP --> F[F 交付檢查]
+    F -->|解壓縮 + 報告| P[POC-SOURCE/ + DL-00]
+    F --> G[G 掃描建庫]
+    G --> S[.bobz/local-settings.json + SQLite DB + DL-01]
     H[H 資料字典] --> D[bobz/DD.json → 複製為 DL-02]
     I[I 流程分析] --> D3[DL-03]
     J[J 影響分析] --> D4[DL-04]
@@ -97,9 +97,8 @@ flowchart LR
 
 | 步驟 | 新增 | 修改 |
 |---|---|---|
-| 0.5 | `OP-MANUAL_UB_CR.md`（專屬實例化手冊） | — |
-| E | `POC-SOURCE/*`、`DL-00` | — |
-| F | 無（只讀） | `AGENTS.md` 不可被覆蓋 |
+| E | `OP-MANUAL_UB_CR.md`（專屬實例化手冊） | — |
+| F | `POC-SOURCE/*`、`DL-00` | — |
 | G | SQLite 資料庫、`DL-01` | `.bobz/local-settings.json` |
 | H | `bobz/DD.json`、`DL-02`（複製） | — |
 | I | `DL-03` | — |

@@ -79,8 +79,11 @@
 
 #### 步驟 1：建立專屬本機 Git 分支（第一步先執行）
 收到 CR 需求單與代碼壓縮包時，**第一時間**從 `master` 建立專屬分支，保持主幹範本庫乾淨：
+
+需手動填入參數：<CR主題>
+
 ```powershell
-git checkout -b cr/ub-fee-change
+git checkout -b cr/<填入實際CR主題，例如：ub-fee-change>
 ```
 
 #### 步驟 2：一鍵生成實例化手冊
@@ -116,7 +119,7 @@ git checkout -b cr/ub-fee-change
 在專屬手冊生成完畢，且**步驟 E 完成代碼解壓至 `POC-SOURCE/` 後**，執行基準 Commit 鎖定初始狀態：
 ```powershell
 git add .
-git commit -m "baseline: add OP-MANUAL_UB_CR.md and import customer source code"
+git commit -m "baseline: add OP-MANUAL_<客戶交付壓縮檔名>.md and import customer source code"
 ```
 
 > 🛑 **資安提醒**：版控僅限本機 Local Git 操作，**不可** push 至外部未經授權之平台；密碼絕對**不可**寫入檔案或 commit。

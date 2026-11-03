@@ -80,21 +80,21 @@
 #### 步驟 1：建立專屬本機 Git 分支（第一步先執行）
 收到 CR 需求單與代碼壓縮包時，**第一時間**從 `master` 建立專屬分支，保持主幹範本庫乾淨：
 
-需手動填入參數：<CR主題>
+需手動填入參數：<git分支名稱>
 
 ```powershell
-git checkout -b cr/<填入實際CR主題，例如：ub-fee-change>
+git checkout -b <填入實際git分支名稱，例如：cr/ub-fee-change>
 ```
 
 #### 步驟 2：一鍵生成實例化手冊
-在專屬分支上，向 Bob 發送實例化提示詞，生成專屬操作手冊（例如 `OP-MANUAL_UB_CR.md`）。生成後即可直接複製貼上提示詞：
+在專屬分支上，向 Bob 發送實例化提示詞，生成專屬操作手冊（例如 `OP-MANUAL_<手冊名稱suffix>.md`）。生成後即可直接複製貼上提示詞：
 
 💬 **Bob 手冊實例化提示詞**：
 
-需手動填入參數：<客戶交付壓縮檔名>、〈業務主題〉、〈CR 標題〉
+需手動填入參數：<手冊名稱suffix>、〈業務主題〉、〈CR 標題〉
 
 ```markdown
-請根據我提供的「客戶 CR 需求單內容」與「程式碼交付資訊」，以工作區的 `OP-MANUAL.md` 為模板，為我生成一份已填入實體參數的專屬操作手冊 `OP-MANUAL_<客戶交付壓縮檔名>.md`。
+請根據我提供的「客戶 CR 需求單內容」與「程式碼交付資訊」，以工作區的 `OP-MANUAL.md` 為模板，為我生成一份已填入實體參數的專屬操作手冊 `OP-MANUAL_<手冊名稱suffix>.md`。
 
 【輸入資訊】
 1. CR 變更請求標題：〈填入實際 CR 標題，例如：退票手續費依面額分級調整〉
@@ -112,17 +112,17 @@ git checkout -b cr/<填入實際CR主題，例如：ub-fee-change>
 3. 嚴禁在產出文件中包含任何解壓密碼或機密密碼。
 4. 嚴禁在此時將已知答案注入步驟卡 J 等前面的步驟中（已知答案僅供步驟卡 N 使用）。
 5. 保持 STE 精神與所有步驟卡（A 至 N）之結構、表格、警告事項不變。
-6. 將結果儲存為新檔案 `OP-MANUAL_<客戶交付壓縮檔名>.md`（不覆蓋原有的 `OP-MANUAL.md`）。
+6. 將結果儲存為新檔案 `OP-MANUAL_<手冊名稱suffix>.md`（不覆蓋原有的 `OP-MANUAL.md`）。
 ```
 
 #### 步驟 3：建立基準線（Baseline）Commit
 在專屬手冊生成完畢，且**步驟 E 完成代碼解壓至 `POC-SOURCE/` 後**，執行基準 Commit 鎖定初始狀態：
 
-需手動填入參數：<客戶交付壓縮檔名>
+需手動填入參數：<手冊名稱suffix>
 
 ```powershell
 git add .
-git commit -m "baseline: add OP-MANUAL_<客戶交付壓縮檔名>.md and import customer source code"
+git commit -m "baseline: add OP-MANUAL_<手冊名稱suffix>.md and import customer source code"
 ```
 
 > 🛑 **資安提醒**：版控僅限本機 Local Git 操作，**不可** push 至外部未經授權之平台；密碼絕對**不可**寫入檔案或 commit。
@@ -430,11 +430,12 @@ flowchart LR
 - SEC 已核可脫敏規則。
 - 已決定工作區位置（例如 `D:\POC-SOURCE`）。
 - 目前不在主線分支（`main` / `master`）。
-- （建議）已依第 0.5 節透過 Bob 產生專屬實例化手冊 `OP-MANUAL_UB_CR.md`。
+- 已建立基準線（Baseline）Commit（`git log` 可見 `baseline:` 開頭的 commit）。
+- （建議）已依第 0.5 節透過 Bob 產生專屬實例化手冊 `OP-MANUAL_<手冊名稱suffix>.md`。
 
 **步驟**
 1. 將從客戶處取得之代碼交付壓縮檔（例如 `UNION_BANK_POC.zip`）直接放置於工作區核准路徑。
-2. 貼下一鍵交付完整性檢查提示詞（若已有 `OP-MANUAL_UB_CR.md`，可直接複製該檔內之提示詞，不需手動置換參數）。
+2. 貼下一鍵交付完整性檢查提示詞（若已有 `OP-MANUAL_<手冊名稱suffix>.md`，可直接複製該檔內之提示詞，不需手動置換參數）。
    - 💬 **Bob 提示詞**：`這是我剛拿到的客戶交付壓縮包 〈交付壓縮檔〉（若有密碼，密碼為 〈壓縮檔密碼〉）。我已取得 D2 授權。請一鍵幫我跑完步驟卡 E 的 1 至 7 步完整性稽核：(1) 在背景自動將其解壓縮至工作區核准路徑；(2) 自動解析內含之 MANIFEST.csv 宣告與 README.txt 編譯環境，比對宣告數與解壓縮後的實際檔數；(3) 自動計算工作區所有實體檔案的 SHA-256 哈希值並與 MANIFEST.csv 比對，抓出校驗碼不符或空白之項目；(4) 自動唯讀掃描所有 COBOL、Copybook、JCL 的交叉相依性（COPY/CALL 關係與缺失項目），偵測 CICS/DB2/IMS/MQ 等中介軟體關鍵字；(5) 自動彙整並輸出完整的《步驟卡 E — 程式碼交付完整性檢查報告》，並將報告存檔於 `delivery-output/DL-00-delivery-check.md`（不另存 `.bobz/`）。`
 
 **預期結果**

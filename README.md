@@ -4,8 +4,12 @@
 規則依據：[`AGENTS.md`](AGENTS.md)、[`OP-MANUAL.md`](OP-MANUAL.md)。
 參考來源與證據對照：[`RESOURCES.md`](RESOURCES.md)。CR 目錄範本目前僅供參考，暫無強制填寫要求。
 
-## 階段概覽
-參考 OP-MANUAL.md: "1.1 端到端流程"。
+## 階段概覽（核心原則）
+
+- **預期客戶提供**：CR 需求變更單（email / Word）＋ 程式碼壓縮包（`.zip`）
+- **現場操作流程**：Git 開新分支，執行 `OP-MANUAL_xxx.md`（僅 步驟卡 0.5 ＋ E – N）
+- **預期交付**：可參考本文件「[二、After](#二after全部步驟卡-en-完成後的預期狀態)」交付物清單（`delivery-output/` 之 DL-00 至 DL-08）＋ 1 份 Word 報告（各步驟截圖存證）
+- 詳細流程參考：[`OP-MANUAL.md`](OP-MANUAL.md) "1.1 端到端流程"。
 
 ## 一、Before（POC 開始前的狀態）
 

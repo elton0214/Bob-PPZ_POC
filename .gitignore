@@ -32,4 +32,4 @@ ScannerOutput_result.db
 .env.*
 
 # 以下刻意不忽略,保持追蹤:
-#   zapp.yaml, bobz/DD.json, delivery-output/DL-*, CR/, OP-MANUAL*.md
+#   zapp.yaml, bobz/DD.json, delivery-output/DL-*, CR/, OP-MANUAL*.md, .bob/skills/

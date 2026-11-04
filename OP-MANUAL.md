@@ -542,11 +542,14 @@ flowchart LR
 1. 切換到 **Z Code** 模式。
 2. 貼下一鍵剖析說明與規則提煉提示詞。
    - 💬 **Bob 提示詞**：`請幫我對 〈變更目標程式〉.cbl 執行一鍵剖析：(1) 以 〈視角：架構師〉 視角解釋整支程式，並為每項關鍵判斷、業務規則或主要處理步驟標註來源行號；(2) 自動提煉業務規則（Extract business rules）並形成 Markdown 報告；(3) 繪製 Mermaid 格式之內部段落控制流程圖；(4) 追蹤關鍵欄位 〈追蹤欄位〉 於程式中被讀取、寫入與傳遞的所有位置。`
-3. 若需要產生正式程式文件與跨程式 HTML 文件，點選 **Start Workflow**，執行 **Generate program documentation** 與 **Generate application documentation**。
+3. 產生 human-friendly 精簡版，供 BIZ 與 DEV 快速閱讀（原檔保留，不覆蓋）。
+   - 💬 **Bob 提示詞**：`請依剛產生的 delivery-output/DL-03-〈變更目標程式〉-explanation.md，另存一份 human-friendly 精簡版 delivery-output/DL-03-〈變更目標程式〉-explanation_brief.md，不要覆蓋原檔：(1) 開頭加 5 點以內的重點摘要（程式做什麼、本次變更的改動點與行號、可能波及範圍）；(2) 刪除重複內容，技術術語附白話說明；(3) 行號只保留在業務規則、關鍵判斷與欄位追蹤；(4) 流程圖只留一張主流程圖與一張追蹤欄位流向圖；(5) 與本次變更無直接關係的觀察移到附錄；(6) 全文控制在約 120 行內。邊界與「尚未驗證」項目必須完整保留，不可刪減或改寫原檔結論。`
+4. 若需要產生正式程式文件與跨程式 HTML 文件，點選 **Start Workflow**，執行 **Generate program documentation** 與 **Generate application documentation**。
 
 **預期結果**
 *   **【實體檔案產出與更新】**：
     *   **產生檔**：`delivery-output/DL-03-〈變更目標程式〉-explanation.md`（程式剖析說明與業務規則書）。
+    *   **產生檔**：`delivery-output/DL-03-〈變更目標程式〉-explanation_brief.md`（精簡版，供 BIZ 閱讀；原檔仍為完整底稿）。
 *   **分析報告**：取得完整的流程分析說明（包括外部介面、關鍵判斷邏輯，每項皆標註行號）。
 *   **控制與資料流**：取得 Mermaid 格式的段落控制流程圖，及 WS 欄位之讀寫追蹤紀錄。
 *   **階段交付物**：完成 **DL-03：流程分析報告**。

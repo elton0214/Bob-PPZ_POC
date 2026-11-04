@@ -1,1 +1,35 @@
+# ===== 既有規則 =====
 screenshot.docx
+
+# ===== 作業系統 / 編輯器暫存 =====
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*.tmp
+~$*
+
+# ===== Bob / PPZ 自動產生的暫存與掃描產物(可重新產生)=====
+.bob/tmp/
+.bobz/expanded/
+.bobz/expanded-single/
+.bobz/local-settings.json
+WCA4ZTMIOutput/
+ScannerOutput_result.db
+*.db
+*.db-journal
+
+# ===== 客戶交付壓縮檔(密碼保護,不可進版控)=====
+*.zip
+*.7z
+*.rar
+
+# ===== 憑證類(不得提交)=====
+*.pem
+*.key
+*.pfx
+.env
+.env.*
+
+# 以下刻意不忽略,保持追蹤:
+#   zapp.yaml, bobz/DD.json, delivery-output/DL-*, CR/, OP-MANUAL*.md

@@ -66,6 +66,7 @@
 | 〈追蹤欄位〉 | 資料流程追蹤的欄位 | WS-FEE-AMT | 步驟 H 之後 | 資料字典、原始碼 | ☐ |
 | 〈視角〉 | Explain code 的視角：架構師／業務／開發者 | 架構師 | 步驟 I | 使用者選擇 | ☐ |
 | 〈變更標題〉 | 變更請求標題 | 退票手續費依面額分級 | 步驟 J 之前 | CR 單 | ☐ |
+| 〈CR文件路徑〉 | CR 需求單文件的實際路徑（Bob 須完整讀取） | CR/CR-sample1.md | 步驟 J 之前 | CR 單 | ☐ |
 | 〈影響分析報告路徑〉 | 影響分析報告的實際路徑 | delivery-output/DL-04-impact-analysis.md | 步驟 J 之後 | 步驟 J 產出 | ☐ |
 | 〈訂閱區域〉 | Bob 訂閱區域，用於區域端點 | 日本 | 步驟 B/C | 訂閱設定 | ☐ |
 | 〈起〉、〈迄〉 | 片段說明的行號範圍 | — | 提問當下 | 使用者決定 | — |
@@ -394,7 +395,7 @@ flowchart LR
 
      【生成規則】
      1. 讀取工作區的 `OP-MANUAL.md`。
-     2. 將所有提示詞中的固定參數（如 〈變更標題〉、〈交付壓縮檔〉、〈業務主題〉、〈變更目標程式〉 等）替換為上述真實值。
+     2. 將所有提示詞中的固定參數（如 〈變更標題〉、〈CR文件路徑〉、〈交付壓縮檔〉、〈業務主題〉、〈變更目標程式〉 等）替換為上述真實值。
      3. 嚴禁在產出文件中包含任何解壓密碼或機密密碼。
      4. 嚴禁在此時將已知答案注入步驟卡 J 等前面的步驟中（已知答案僅供步驟卡 N 使用）。
      5. 保持 STE 精神與所有步驟卡（A 至 N）之結構、表格、警告事項不變。
@@ -579,16 +580,19 @@ flowchart LR
 
 **步驟**
 1. 在 **Z Architect** 模式，輸入 `/impact-analysis`。
-   - 💬 **Bob 提示詞**：`請針對「〈變更標題〉」做影響分析（Local 模式）。請列出受影響的程式、COPY、表、檔案與批次；對變更欄位追蹤資料流程；標示邊界與尚未驗證的項目。`
+   - 💬 **Bob 提示詞**：`請依 CR 單 〈CR文件路徑〉（〈變更標題〉）做影響分析（Local 模式）。請先完整讀取該 CR 文件，再列出受影響的程式、COPY、表、檔案與批次；對變更欄位追蹤資料流程；標示邊界與尚未驗證的項目。CR 中未明確定義的規則（如級距邊界、豁免來源）請列為邊界，不要預設處理。`
    - Bob 會自動執行：SQL 相依查詢 → 資料流程追蹤 → 詢問釐清問題 → 自我檢查報告完整性，不需人工逐步觸發。
 2. **⚠️ 必要人工把關**：回答 Bob 的 1–2 個釐清問題。例如：其他系統是否直接讀取同一張表？
    - 💬 **Bob 提示詞**：`〈直接回答 Bob 的問題。若不確定，回答「不確定」。不要猜測。〉`
 3. 當 Bob 詢問是否另用 Z Understand 時，回答「否」（POC 預設）。若另有安排，依安排處理。
 4. 確認 `delivery-output/DL-04-impact-analysis.md` 已產生，並目視確認報告含相依圖、風險表、信心等級。
+5. 釐清問題已回答、DL-04 定稿後，產生 human-friendly 精簡版，供專案負責人快速閱讀（原檔保留，不覆蓋）。
+   - 💬 **Bob 提示詞**：`請依 delivery-output/DL-04-impact-analysis.md，另存一份 human-friendly 精簡版 delivery-output/DL-04-impact-analysis_brief.md，不要覆蓋原檔：(1) 開頭加 5 點以內的重點摘要（一定要改的程式、最大缺口、可能波及範圍）；(2) 受影響清單合併成一張表，並標示必改／條件式／只重編譯；(3) 只留一張欄位流向圖，技術術語附白話說明；(4) 風險表保留 ID、等級與處理方式；(5) 開頭註明「本檔不取代底稿」；(6) 全文控制在約 150 行內。邊界與「尚未驗證」項目必須完整保留，不可刪減或改寫原檔結論。`
 
 **預期結果**
 *   **【實體檔案產出與更新】**：
     *   **產生檔**：`delivery-output/DL-04-impact-analysis.md`（變更影響分析報告，原為 `IMPACT-ANALYSIS.md`）。
+    *   **產生檔**：`delivery-output/DL-04-impact-analysis_brief.md`（精簡版；原檔仍為完整底稿，核准與追溯以底稿為準）。
 *   **相依性與風險**：報告中包含相依性關係圖、潛在風險表、變更信心等級，以及動態呼叫與缺失來源等「邊界」項目清單。
 *   **階段交付物**：完成 **DL-04：影響分析報告**。
 
@@ -620,10 +624,13 @@ flowchart LR
    - Bob 會自動自我檢查計畫完整性，不需人工逐項核對。
 2. **⚠️ 必要人工把關**：回答 Bob 的開放問題：邊界值、例外情形、部署時機。
 3. 請 DEV、MF、BIZ 審閱並取得核准。
+4. 計畫定稿（開放問題已回答）後，產生 human-friendly 精簡版，供核准人快速閱讀（原檔保留，不覆蓋）。
+   - 💬 **Bob 提示詞**：`請依 delivery-output/DL-05-implementation-plan.md，另存一份 human-friendly 精簡版 delivery-output/DL-05-implementation-plan_brief.md，不要覆蓋原檔：(1) 開頭加 5 點以內的重點摘要（要改什麼、不改什麼、最大風險、需核准的決定）；(2) 執行順序與受影響元件各用一張表；(3) 測試策略的案例（含邊界值）與回退計畫必須逐項完整保留，不可濃縮；(4) 開頭註明「本檔不取代底稿，核准以底稿為準」；(5) 全文控制在約 150 行內。邊界與「尚未驗證」項目必須完整保留，不可刪減或改寫原檔結論。`
 
 **預期結果**
 *   **【實體檔案產出與更新】**：
     *   **產生檔**：`delivery-output/DL-05-implementation-plan.md`（實施計畫書，原為 `implementation-plan.md`）。
+    *   **產生檔**：`delivery-output/DL-05-implementation-plan_brief.md`（精簡版；原檔仍為完整底稿，核准以底稿為準）。
 *   **計畫合規**：計畫中完整載入目標與非目標、工作流、執行順序、受影響元件、風險評估、**測試策略**（含邊界值案例）、及**回退計畫**。
 *   **階段交付物**：完成 **DL-05：實施計畫**。
 
@@ -658,11 +665,14 @@ flowchart LR
 3. 開啟 IDE 的差異檢視（Diff），由 DEV 逐行進行最終審核。**不可**整批接受。
 4. 若有新增欄位，要求 Bob 自動更新資料字典，並重新複製到交付資料夾。
    - 💬 **Bob 提示詞**：`請幫我更新新增欄位到 bobz/DD.json 字典檔案中，scope 請含 〈變更目標程式〉；完成後執行 Copy-Item -Path "bobz/DD.json" -Destination "delivery-output/DL-02-data-dictionary.json" -Force 同步交付檔。`
+5. DEV 逐行審閱完成並已填入審閱結果後，產生 human-friendly 精簡版（原檔保留，不覆蓋）。
+   - 💬 **Bob 提示詞**：`請依 delivery-output/DL-06-review-record.md，另存一份 human-friendly 精簡版 delivery-output/DL-06-review-record_brief.md，不要覆蓋原檔：(1) 開頭加 5 點以內的重點摘要（改了哪幾個檔、共幾處修改、有無超出計畫範圍、診斷結果、DEV 審閱結果）；(2) 修改清單每一處都要列出（檔名、修改位置、對應計畫項目、DEV 審閱結果），只縮短描述，不可省略任何一處；(3) 每處修改附一句白話說明；(4) 開頭註明「本檔不取代底稿，審查以底稿與 IDE Diff 為準」；(5) 全文控制在約 100 行內。超出計畫範圍的修改與「尚未驗證」項目必須完整保留，不可刪減或改寫原檔結論。`
 
 **預期結果**
 *   **【實體檔案產出與更新】**：
     *   **修改檔**：直接於 `cobol/` 或 `copybook/` 底下更新實體程式碼（如 `CHKRTN01.cbl` 或 `CHKFEE01.cpy`）。
     *   **產生檔**：`delivery-output/DL-06-review-record.md`（代碼審查與 Diff 變更紀錄）。
+    *   **產生檔**：`delivery-output/DL-06-review-record_brief.md`（精簡版；原檔仍為完整底稿，審查以底稿與 IDE Diff 為準）。
 *   **修改精準**：實體代碼變更完全限定在 `implementation-plan.md` 計畫範圍內，無超出範圍之改動。
 *   **階段交付物**：完成 **DL-06：程式修改建議與審查紀錄**。
 
@@ -701,10 +711,13 @@ flowchart LR
    - 依約定格式加密後，經核准通道回傳檔案
 3. BOB 比對結果並彙整 DL-07。
    - 💬 **Bob 提示詞**：`以下是測試 SYSOUT（已遮蔽）。請與預期結果比對，列出通過、失敗與尚未驗證的項目。如有編譯訊息，請定位原因並提出最小修正。請彙整為 DL-07 測試結果記錄：〈貼上已遮蔽的 SYSOUT〉`
+4. DL-07 定稿後，產生 human-friendly 精簡版，供 BIZ 快速閱讀（原檔保留，不覆蓋）。
+   - 💬 **Bob 提示詞**：`請依 delivery-output/DL-07-test-results.md，另存一份 human-friendly 精簡版 delivery-output/DL-07-test-results_brief.md，不要覆蓋原檔：(1) 開頭加 5 點以內的重點摘要（共幾案、通過幾案、失敗幾案、尚未驗證幾案、日終合計是否一致）；(2) 測試案例用一張表呈現（案例、輸入、預期、實際、結果），每案都要列出；(3) 失敗與尚未驗證項目逐項保留原因與後續處理；(4) 不可貼入 SYSOUT 原文或任何敏感資料；(5) 開頭註明「本檔不取代底稿」；(6) 全文控制在約 100 行內。邊界與「尚未驗證」項目必須完整保留，不可刪減或改寫原檔結論。`
 
 **預期結果**
 *   **【實體檔案產出與更新】**：
     *   **產生檔**：`delivery-output/DL-07-test-results.md`（主機測試結果報告）。
+    *   **產生檔**：`delivery-output/DL-07-test-results_brief.md`（精簡版；原檔仍為完整底稿，驗收以底稿為準）。
 *   **編譯無誤**：COBOL/COPYBOOK 於主機測試環境中編譯成功，無嚴重之語法錯誤。
 *   **結果合規**：測試結果之日終合計與入帳金額與預期基準完全一致，無任何落差。
 *   **階段交付物**：完成 **DL-07：主機測試結果**。
@@ -771,10 +784,11 @@ flowchart LR
 | 說明片段 | Z Code 或 Z Architect | `請說明 〈變更目標程式〉.cbl 第 〈起〉 至 〈迄〉 行在做什麼。請列出用到的欄位。` |
 | 追蹤欄位 | Z Architect | `請追蹤 〈追蹤欄位〉 在 〈變更目標程式〉 中被讀取、寫入與傳遞的位置。` |
 | 建立資料字典 | Z Code | 按 Start Workflow，選 Generate data dictionary。或輸入 `/data-dictionary-management`。請聚焦與手續費相關的欄位。 |
-| 影響分析 | Z Architect | `/impact-analysis`。或：`請針對「退票手續費依面額分級」做影響分析。請列出受影響的程式、COPY、表與批次。請標示邊界與尚未驗證的項目。` |
+| 影響分析 | Z Architect | `/impact-analysis`。或：`請依 CR 單 〈CR文件路徑〉（〈變更標題〉）做影響分析。請先完整讀取該 CR 文件，再列出受影響的程式、COPY、表與批次。請標示邊界與尚未驗證的項目。` |
 | 實施計畫 | Z Architect | `/implementation-planning`。或：`請為上述變更建立實施計畫。計畫必須含測試案例（面額 100,000 與 100,001）與回退計畫。` |
 | 修改程式 | Z Code | `請依已核准的實施計畫修改 〈變更目標Copybook〉 與 〈變更目標程式〉.cbl。只修改計畫範圍內的內容。請列出差異供審閱。` |
 | 判讀編譯錯誤 | Z Code | `以下是編譯訊息。請定位原因，並提出最小修正：〈貼上訊息〉` |
+| 產生精簡版 | 與底稿相同 | `請依 〈底稿路徑〉，另存一份 human-friendly 精簡版 〈底稿路徑去掉 .md，加上 _brief.md〉，不要覆蓋原檔：開頭 5 點以內重點摘要；刪除重複內容並為術語加白話說明；開頭註明「本檔不取代底稿」。邊界與「尚未驗證」項目必須完整保留，不可刪減或改寫原檔結論。` |
 
 
 ---
@@ -855,11 +869,11 @@ flowchart LR
 | **DL-00** | 交付完整性檢查報告 | F | `DL-00-delivery-check.md` | DEV、MF |
 | **DL-01** | 程式掃描結果／相依關係圖 | G | `DL-01-scan-summary.md` | DEV |
 | **DL-02** | 資料字典 | H | `DL-02-data-dictionary.json`（由 `bobz/DD.json` 複製而來，僅供交付） | BIZ、DEV |
-| **DL-03** | 流程分析報告 | I | `DL-03-〈變更目標程式〉-explanation.md` | BIZ |
-| **DL-04** | 影響分析報告 | J | `DL-04-impact-analysis.md` | 專案負責人 |
-| **DL-05** | 實施計畫 | K | `DL-05-implementation-plan.md` | 專案負責人 |
-| **DL-06** | 程式修改建議與審查紀錄 | L | `DL-06-review-record.md` | DEV |
-| **DL-07** | 主機測試結果 | M | `DL-07-test-results.md` | MF |
+| **DL-03** | 流程分析報告 | I | `DL-03-〈變更目標程式〉-explanation.md`；精簡版 `DL-03-〈變更目標程式〉-explanation_brief.md` | BIZ |
+| **DL-04** | 影響分析報告 | J | `DL-04-impact-analysis.md`；精簡版 `DL-04-impact-analysis_brief.md` | 專案負責人 |
+| **DL-05** | 實施計畫 | K | `DL-05-implementation-plan.md`；精簡版 `DL-05-implementation-plan_brief.md` | 專案負責人 |
+| **DL-06** | 程式修改建議與審查紀錄 | L | `DL-06-review-record.md`；精簡版 `DL-06-review-record_brief.md` | DEV |
+| **DL-07** | 主機測試結果 | M | `DL-07-test-results.md`；精簡版 `DL-07-test-results_brief.md` | MF |
 | **DL-08** | 成果回顧報告 | N | `DL-08-POC-review-report.md` | 專案負責人 |
 
 ---

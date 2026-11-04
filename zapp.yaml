@@ -1,0 +1,20 @@
+name: 已產生的 ZAPP 文件
+description: CRRZG5299I 請注意，此預設檔案會搜尋所有開啟的 VS Code
+  工作區中的所有本機資料夾，效率可能非常低。請修改「locations」項目，使其盡可能具體。或新增 "mvs"
+  類型的項目，以指定遠端位置作為搜尋目標。如需詳細資訊，請參閱(說明文件)[https://ibm.github.io/zopeneditor-about/Docs/setting_propertygroup.html]
+author: IBM Z Open Editor
+propertyGroups:
+  - name: search-all
+    libraries:
+      - name: syslib
+        type: local
+        locations:
+          - "POC-SOURCE/**"
+      - name: maclib
+        type: local
+        locations:
+          - "POC-SOURCE/**"
+      - name: proclib
+        type: local
+        locations:
+          - "POC-SOURCE/**"

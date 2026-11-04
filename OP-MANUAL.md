@@ -668,10 +668,8 @@ flowchart LR
 3. Bob 產生 `DL-06-review-record.md` 後，**先**產生 human-friendly 精簡版，供 DEV 快速掌握修改全貌（原檔保留，不覆蓋）。此時「DEV 審閱結果」欄尚未填寫。
    - 💬 **Bob 提示詞**：`/brief-report delivery-output/DL-06-review-record.md`
 4. 開啟 IDE 的差異檢視（Diff），DEV 以精簡版為入口，逐行進行最終審核。**不可**整批接受。審查以底稿與 IDE Diff 為準，並將審閱結果填入 `DL-06-review-record.md`。
-5. 若有新增欄位，要求 Bob 自動更新資料字典，並重新複製到交付資料夾。
-   - 💬 **Bob 提示詞**：`請幫我更新新增欄位到 bobz/DD.json 字典檔案中，scope 請含 〈變更目標程式〉；完成後執行 Copy-Item -Path "bobz/DD.json" -Destination "delivery-output/DL-02-data-dictionary.json" -Force 同步交付檔。`
-6. DEV 審閱結果填入底稿後，**重新執行**步驟 3 的指令，讓精簡版帶入最終審閱結果（覆蓋舊的 `_brief`，底稿不動）。
-   - 💬 **Bob 提示詞**：`/brief-report delivery-output/DL-06-review-record.md`
+5. DEV 審閱結果填入底稿後，一次完成兩件事：(a) 若有新增欄位，更新資料字典並重新複製到交付資料夾；(b) **重新執行**步驟 3 的指令，讓精簡版帶入最終審閱結果（覆蓋舊的 `_brief`，底稿不動）。無新增欄位時，只做 (b)。
+   - 💬 **Bob 提示詞**：`請依序執行：(1) 更新新增欄位到 bobz/DD.json 字典檔案中，scope 請含 〈變更目標程式〉，完成後執行 Copy-Item -Path "bobz/DD.json" -Destination "delivery-output/DL-02-data-dictionary.json" -Force 同步交付檔；(2) 接著執行 /brief-report delivery-output/DL-06-review-record.md，重新產生精簡版。`
 
 **預期結果**
 *   **【實體檔案產出與更新】**：

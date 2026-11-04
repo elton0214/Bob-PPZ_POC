@@ -17,6 +17,7 @@
 Bob-PPZ_POC/
 ├── AGENTS.md                      ← 已存在（POC 規則，不可被 /init 覆蓋）
 ├── .gitignore                     ← 已存在（排除暫存、掃描產物、交付壓縮檔、憑證）
+├── zapp.yaml                      ← 已存在（Z Open Editor 設定：COPY／PROC 搜尋路徑，指向 POC-SOURCE/**）
 ├── README.md                      ← 本文件
 ├── OP-MANUAL.md
 ├── CR/
@@ -38,6 +39,7 @@ Bob-PPZ_POC/
 Bob-PPZ_POC/
 ├── AGENTS.md                      ← 不變（/init 不可覆蓋）
 ├── .gitignore                     ← 不變（見下方「版控範圍」）
+├── zapp.yaml                      ← 不變（若程式碼放在其他資料夾，須同步修改 locations）
 ├── README.md
 ├── .bob/skills/brief-report/      ← 專案技能，需提交版控
 ├── OP-MANUAL.md                   ← 通用手冊模板
@@ -98,7 +100,9 @@ Bob-PPZ_POC/
 | 不進版控 | `WCA4ZTMIOutput/`、`*.db`、`*.db-journal` | 掃描資料庫，可重新產生 |
 | 不進版控 | `*.zip`、`*.7z`、`*.rar` | 客戶交付壓縮檔（密碼保護） |
 | 不進版控 | `*.pem`、`*.key`、`*.pfx`、`.env`、`.env.*` | 憑證類，不得提交 |
-| 進版控 | `bobz/DD.json`、`delivery-output/DL-*`、`CR/`、`OP-MANUAL*.md`、`.bob/skills/` | 刻意追蹤 |
+| 進版控 | `bobz/DD.json`、`delivery-output/DL-*`、`CR/`、`OP-MANUAL*.md`、`.bob/skills/`、`zapp.yaml` | 刻意追蹤 |
+
+> **`zapp.yaml` 路徑注意**：`locations` 目前是 `POC-SOURCE/**`。若交付包解壓到其他資料夾（例如 `sample1-source/POC-SOURCE/`），編輯器可能找不到 COPY 檔，造成 `zopeneditor-*` 工具與 COPY 展開結果不完整。是否需要修改，**尚未驗證**，請在步驟 F 解壓縮後確認。
 
 > `.bobz/local-settings.json` 被忽略，因此換機器或重新 clone 後須重新掃描建庫（步驟 G）。
 

@@ -27,6 +27,7 @@
 - Z Architect 模式不可修改程式碼。需要修改時，請使用者切換到 Z Code。
 - 不可執行或建議 `/init` 覆蓋本檔。本檔已含 POC 規則。使用者要執行 `/init` 時，先提醒備份或確認版控。
 - 不可使用 `/explain` 指令與 explain 技能。3.0.20 以上版本不支援。整支程式說明改用 Explain code 工作流程。
+- `_brief` 精簡版只用專案技能 `/brief-report 〈底稿路徑〉`（`.bob/skills/brief-report/`）產生，且只在使用者輸入該指令時執行。精簡版**不取代底稿**，核准與審查以底稿為準；邊界與「尚未驗證」項目不可刪減；底稿修改後須重新產生。
 - 模式與工具對照（官方）：Explain code、Generate program documentation、Extract business rules、Generate data dictionary 屬 Z Code。Generate application documentation、`zopeneditor-*` 流程工具、影響分析、實施計畫屬 Z Architect。目前模式不符時，請使用者切換模式。
 
 ---

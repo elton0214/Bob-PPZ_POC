@@ -624,10 +624,11 @@ flowchart LR
 1. 在 **Z Architect** 模式，輸入 `/implementation-planning`，或要求 Bob「**建立實施計畫**」。Bob 會啟動實施規劃技能。
    - 💬 **Bob 提示詞**：`請依影響分析報告 〈影響分析報告路徑〉，建立實施計畫。計畫必須含目標與非目標、工作流、執行順序、受影響元件、風險、測試策略（含面額 100,000 與 100,001 邊界值案例）與回退計畫。請自我檢查上述所有項目是否齊全，缺少的項目請自動補上。輸出至 delivery-output/DL-05-implementation-plan.md。`
    - Bob 會自動自我檢查計畫完整性，不需人工逐項核對。
-2. **⚠️ 必要人工把關**：回答 Bob 的開放問題：邊界值、例外情形、部署時機。
-3. 請 DEV、MF、BIZ 審閱並取得核准。
-4. 計畫定稿（開放問題已回答）後，產生 human-friendly 精簡版，供核准人快速閱讀（原檔保留，不覆蓋）。
+2. **⚠️ 必要人工把關**：回答 Bob 的開放問題：邊界值、例外情形、部署時機。回答後確認 `DL-05-implementation-plan.md` 已更新為定稿。
+3. 計畫定稿後，**先**產生 human-friendly 精簡版，供核准人快速閱讀（原檔保留，不覆蓋）。
    - 💬 **Bob 提示詞**：`/brief-report delivery-output/DL-05-implementation-plan.md`
+4. 請 DEV、MF、BIZ 以精簡版為入口審閱，需要追溯時對照底稿，並取得核准。**核准以底稿為準。**
+   - 若審閱後底稿有修改，必須重新執行步驟 3 產生精簡版，再請核准人確認，避免精簡版與底稿不一致。
 
 **預期結果**
 *   **【實體檔案產出與更新】**：
@@ -664,17 +665,19 @@ flowchart LR
 1. 切換到 **Z Code** 模式。
 2. 貼下一鍵修改、診斷與審查彙整提示詞。
    - 💬 **Bob 提示詞**：`請依已核准的 implementation-plan.md 對專案進行程式修改：(1) 修改 〈變更目標Copybook〉 與 〈變更目標程式〉.cbl，嚴格維持固定格式 7–72 欄，且不超出計畫範圍；(2) 修改完成後，自動呼叫 get_diagnostics 工具對上述兩個檔案進行語法與編譯前診斷，確保 100% 無語法與編譯錯誤（若發現診斷問題請立即修復，直至診斷完全乾淨為止）；(3) 產生修改前後的 Diff 差異摘要，並自動彙整為 DL-06 審查記錄報告（包含欄位：檔名、修改位置、對應計畫項目、DEV 審閱結果）。`
-3. 開啟 IDE 的差異檢視（Diff），由 DEV 逐行進行最終審核。**不可**整批接受。
-4. 若有新增欄位，要求 Bob 自動更新資料字典，並重新複製到交付資料夾。
+3. Bob 產生 `DL-06-review-record.md` 後，**先**產生 human-friendly 精簡版，供 DEV 快速掌握修改全貌（原檔保留，不覆蓋）。此時「DEV 審閱結果」欄尚未填寫。
+   - 💬 **Bob 提示詞**：`/brief-report delivery-output/DL-06-review-record.md`
+4. 開啟 IDE 的差異檢視（Diff），DEV 以精簡版為入口，逐行進行最終審核。**不可**整批接受。審查以底稿與 IDE Diff 為準，並將審閱結果填入 `DL-06-review-record.md`。
+5. 若有新增欄位，要求 Bob 自動更新資料字典，並重新複製到交付資料夾。
    - 💬 **Bob 提示詞**：`請幫我更新新增欄位到 bobz/DD.json 字典檔案中，scope 請含 〈變更目標程式〉；完成後執行 Copy-Item -Path "bobz/DD.json" -Destination "delivery-output/DL-02-data-dictionary.json" -Force 同步交付檔。`
-5. DEV 逐行審閱完成並已填入審閱結果後，產生 human-friendly 精簡版（原檔保留，不覆蓋）。
+6. DEV 審閱結果填入底稿後，**重新執行**步驟 3 的指令，讓精簡版帶入最終審閱結果（覆蓋舊的 `_brief`，底稿不動）。
    - 💬 **Bob 提示詞**：`/brief-report delivery-output/DL-06-review-record.md`
 
 **預期結果**
 *   **【實體檔案產出與更新】**：
     *   **修改檔**：直接於 `cobol/` 或 `copybook/` 底下更新實體程式碼（如 `CHKRTN01.cbl` 或 `CHKFEE01.cpy`）。
     *   **產生檔**：`delivery-output/DL-06-review-record.md`（代碼審查與 Diff 變更紀錄）。
-    *   **產生檔**：`delivery-output/DL-06-review-record_brief.md`（精簡版；原檔仍為完整底稿，審查以底稿與 IDE Diff 為準）。
+    *   **產生檔**：`delivery-output/DL-06-review-record_brief.md`（精簡版；原檔仍為完整底稿，審查以底稿與 IDE Diff 為準；DEV 審閱完成後需重新產生，才會含最終審閱結果）。
 *   **修改精準**：實體代碼變更完全限定在 `implementation-plan.md` 計畫範圍內，無超出範圍之改動。
 *   **階段交付物**：完成 **DL-06：程式修改建議與審查紀錄**。
 

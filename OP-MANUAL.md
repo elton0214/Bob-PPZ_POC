@@ -118,7 +118,7 @@ flowchart LR
 |---|---|---|---|
 | 🤖 **BOB** | Bob 對話＋專案規則 | 用自然語言提示詞。Bob 讀檔、比對、產出報告。規則寫在 `AGENTS.md`。 |
 | 🛠 **PPZ** | PPZ 工具 | Bob 呼叫底層剖析工具（如掃描、變更分析、控制流程與資料流程工具），用戶直接以自然語言提問即可觸發。 |
-| 🔁 **WF** | 內建工作流程／技能 | 透過「Start Workflow」啟動的引導式流程：**Explain code**、**Generate program documentation**、**Generate application documentation**、**Extract business rules**；或專屬技能：/data-dictionary-management、/impact-analysis、/implementation-planning。 |
+| 🔁 **WF** | 內建工作流程／技能 | 透過「Start Workflow」啟動的引導式流程：**Explain code**、**Generate program documentation**、**Generate application documentation**、**Extract business rules**；或專屬技能：/data-dictionary-management、/impact-analysis、/implementation-planning；另有本專案自訂技能 /brief-report（`.bob/skills/brief-report/`）。 |
 | 👤 **人工** | 人員操作 | 核可、帳號、網路、主機編譯與測試、簽收。AI 不可取代。 |
 
 | 步驟卡 | 主要執行方式 | 適合交給 Bob／PPZ 的部分 | 必須由人工完成的部分 |
@@ -156,6 +156,7 @@ flowchart LR
 | 業務規則 | **Extract business rules**（Z Code） | 無 |
 | 影響分析 | 無（技能） | `/impact-analysis`，或直接要求「影響分析」（Z Architect） |
 | 實施計畫 | 無（技能） | `/implementation-planning`，或直接要求「建立實施計畫」（Z Architect） |
+| 精簡版報告（_brief） | 無（專案自訂技能） | `/brief-report 〈底稿路徑〉`（Z Code 或 Z Architect）。只在輸入指令時執行，不會自動觸發 |
 
 > 官方建議：多階段任務用工作流程，例如解釋整支程式、產生完整文件。小範圍修改、快速查詢、單檔編輯用直接提問。
 
@@ -544,7 +545,8 @@ flowchart LR
 2. 貼下一鍵剖析說明與規則提煉提示詞。
    - 💬 **Bob 提示詞**：`請幫我對 〈變更目標程式〉.cbl 執行一鍵剖析：(1) 以 〈視角：架構師〉 視角解釋整支程式，並為每項關鍵判斷、業務規則或主要處理步驟標註來源行號；(2) 自動提煉業務規則（Extract business rules）並形成 Markdown 報告；(3) 繪製 Mermaid 格式之內部段落控制流程圖；(4) 追蹤關鍵欄位 〈追蹤欄位〉 於程式中被讀取、寫入與傳遞的所有位置。`
 3. 產生 human-friendly 精簡版，供 BIZ 與 DEV 快速閱讀（原檔保留，不覆蓋）。
-   - 💬 **Bob 提示詞**：`請依剛產生的 delivery-output/DL-03-〈變更目標程式〉-explanation.md，另存一份 human-friendly 精簡版 delivery-output/DL-03-〈變更目標程式〉-explanation_brief.md，不要覆蓋原檔：(1) 開頭加 5 點以內的重點摘要（程式做什麼、本次變更的改動點與行號、可能波及範圍）；(2) 刪除重複內容，技術術語附白話說明；(3) 行號只保留在業務規則、關鍵判斷與欄位追蹤；(4) 流程圖只留一張主流程圖與一張追蹤欄位流向圖；(5) 與本次變更無直接關係的觀察移到附錄；(6) 全文控制在約 120 行內。邊界與「尚未驗證」項目必須完整保留，不可刪減或改寫原檔結論。`
+   - 💬 **Bob 提示詞**：`/brief-report delivery-output/DL-03-〈變更目標程式〉-explanation.md`
+   - 此指令呼叫 `brief-report` 技能（`.bob/skills/brief-report/SKILL.md`，隨專案版控；新開對話才會載入）。技能固定保留邊界與「尚未驗證」項目，並在寫入前後核對數量。
 4. 若需要產生正式程式文件與跨程式 HTML 文件，點選 **Start Workflow**，執行 **Generate program documentation** 與 **Generate application documentation**。
 
 **預期結果**
@@ -587,7 +589,7 @@ flowchart LR
 3. 當 Bob 詢問是否另用 Z Understand 時，回答「否」（POC 預設）。若另有安排，依安排處理。
 4. 確認 `delivery-output/DL-04-impact-analysis.md` 已產生，並目視確認報告含相依圖、風險表、信心等級。
 5. 釐清問題已回答、DL-04 定稿後，產生 human-friendly 精簡版，供專案負責人快速閱讀（原檔保留，不覆蓋）。
-   - 💬 **Bob 提示詞**：`請依 delivery-output/DL-04-impact-analysis.md，另存一份 human-friendly 精簡版 delivery-output/DL-04-impact-analysis_brief.md，不要覆蓋原檔：(1) 開頭加 5 點以內的重點摘要（一定要改的程式、最大缺口、可能波及範圍）；(2) 受影響清單合併成一張表，並標示必改／條件式／只重編譯；(3) 只留一張欄位流向圖，技術術語附白話說明；(4) 風險表保留 ID、等級與處理方式；(5) 開頭註明「本檔不取代底稿」；(6) 全文控制在約 150 行內。邊界與「尚未驗證」項目必須完整保留，不可刪減或改寫原檔結論。`
+   - 💬 **Bob 提示詞**：`/brief-report delivery-output/DL-04-impact-analysis.md`
 
 **預期結果**
 *   **【實體檔案產出與更新】**：
@@ -625,7 +627,7 @@ flowchart LR
 2. **⚠️ 必要人工把關**：回答 Bob 的開放問題：邊界值、例外情形、部署時機。
 3. 請 DEV、MF、BIZ 審閱並取得核准。
 4. 計畫定稿（開放問題已回答）後，產生 human-friendly 精簡版，供核准人快速閱讀（原檔保留，不覆蓋）。
-   - 💬 **Bob 提示詞**：`請依 delivery-output/DL-05-implementation-plan.md，另存一份 human-friendly 精簡版 delivery-output/DL-05-implementation-plan_brief.md，不要覆蓋原檔：(1) 開頭加 5 點以內的重點摘要（要改什麼、不改什麼、最大風險、需核准的決定）；(2) 執行順序與受影響元件各用一張表；(3) 測試策略的案例（含邊界值）與回退計畫必須逐項完整保留，不可濃縮；(4) 開頭註明「本檔不取代底稿，核准以底稿為準」；(5) 全文控制在約 150 行內。邊界與「尚未驗證」項目必須完整保留，不可刪減或改寫原檔結論。`
+   - 💬 **Bob 提示詞**：`/brief-report delivery-output/DL-05-implementation-plan.md`
 
 **預期結果**
 *   **【實體檔案產出與更新】**：
@@ -666,7 +668,7 @@ flowchart LR
 4. 若有新增欄位，要求 Bob 自動更新資料字典，並重新複製到交付資料夾。
    - 💬 **Bob 提示詞**：`請幫我更新新增欄位到 bobz/DD.json 字典檔案中，scope 請含 〈變更目標程式〉；完成後執行 Copy-Item -Path "bobz/DD.json" -Destination "delivery-output/DL-02-data-dictionary.json" -Force 同步交付檔。`
 5. DEV 逐行審閱完成並已填入審閱結果後，產生 human-friendly 精簡版（原檔保留，不覆蓋）。
-   - 💬 **Bob 提示詞**：`請依 delivery-output/DL-06-review-record.md，另存一份 human-friendly 精簡版 delivery-output/DL-06-review-record_brief.md，不要覆蓋原檔：(1) 開頭加 5 點以內的重點摘要（改了哪幾個檔、共幾處修改、有無超出計畫範圍、診斷結果、DEV 審閱結果）；(2) 修改清單每一處都要列出（檔名、修改位置、對應計畫項目、DEV 審閱結果），只縮短描述，不可省略任何一處；(3) 每處修改附一句白話說明；(4) 開頭註明「本檔不取代底稿，審查以底稿與 IDE Diff 為準」；(5) 全文控制在約 100 行內。超出計畫範圍的修改與「尚未驗證」項目必須完整保留，不可刪減或改寫原檔結論。`
+   - 💬 **Bob 提示詞**：`/brief-report delivery-output/DL-06-review-record.md`
 
 **預期結果**
 *   **【實體檔案產出與更新】**：
@@ -712,7 +714,7 @@ flowchart LR
 3. BOB 比對結果並彙整 DL-07。
    - 💬 **Bob 提示詞**：`以下是測試 SYSOUT（已遮蔽）。請與預期結果比對，列出通過、失敗與尚未驗證的項目。如有編譯訊息，請定位原因並提出最小修正。請彙整為 DL-07 測試結果記錄：〈貼上已遮蔽的 SYSOUT〉`
 4. DL-07 定稿後，產生 human-friendly 精簡版，供 BIZ 快速閱讀（原檔保留，不覆蓋）。
-   - 💬 **Bob 提示詞**：`請依 delivery-output/DL-07-test-results.md，另存一份 human-friendly 精簡版 delivery-output/DL-07-test-results_brief.md，不要覆蓋原檔：(1) 開頭加 5 點以內的重點摘要（共幾案、通過幾案、失敗幾案、尚未驗證幾案、日終合計是否一致）；(2) 測試案例用一張表呈現（案例、輸入、預期、實際、結果），每案都要列出；(3) 失敗與尚未驗證項目逐項保留原因與後續處理；(4) 不可貼入 SYSOUT 原文或任何敏感資料；(5) 開頭註明「本檔不取代底稿」；(6) 全文控制在約 100 行內。邊界與「尚未驗證」項目必須完整保留，不可刪減或改寫原檔結論。`
+   - 💬 **Bob 提示詞**：`/brief-report delivery-output/DL-07-test-results.md`
 
 **預期結果**
 *   **【實體檔案產出與更新】**：
@@ -788,7 +790,7 @@ flowchart LR
 | 實施計畫 | Z Architect | `/implementation-planning`。或：`請為上述變更建立實施計畫。計畫必須含測試案例（面額 100,000 與 100,001）與回退計畫。` |
 | 修改程式 | Z Code | `請依已核准的實施計畫修改 〈變更目標Copybook〉 與 〈變更目標程式〉.cbl。只修改計畫範圍內的內容。請列出差異供審閱。` |
 | 判讀編譯錯誤 | Z Code | `以下是編譯訊息。請定位原因，並提出最小修正：〈貼上訊息〉` |
-| 產生精簡版 | 與底稿相同 | `請依 〈底稿路徑〉，另存一份 human-friendly 精簡版 〈底稿路徑去掉 .md，加上 _brief.md〉，不要覆蓋原檔：開頭 5 點以內重點摘要；刪除重複內容並為術語加白話說明；開頭註明「本檔不取代底稿」。邊界與「尚未驗證」項目必須完整保留，不可刪減或改寫原檔結論。` |
+| 產生精簡版 | 與底稿相同 | `/brief-report 〈底稿路徑〉`。技能依報告類型（DL-03 至 DL-07）套用保留規則，並在寫入前後核對邊界、風險、測試案例等數量。需新開對話才會載入。 |
 
 
 ---

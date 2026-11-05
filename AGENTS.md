@@ -11,7 +11,7 @@
 | F | 🤖 BOB | 依下方「步驟卡 F」自動執行程式碼交付完整性檢查並輸出報告。 | 步驟卡 F |
 | G | 🛠 PPZ | 掃描程式碼、建立分析資料庫與相依性查詢（由 Bob 在後台自動呼叫剖析服務）。 | 步驟卡 G–N 補充規則 |
 | H | 🔁 WF＋🛠 PPZ | 資料字典工作流程與斜線命令（/data-dictionary-management）。 | 同上 |
-| I | 🔁 WF＋🛠 PPZ | Explain code、Generate program documentation、Generate application documentation、Extract business rules 引導式工作流程。 | 同上 |
+| I | 🔁 WF | Generate program documentation 引導式工作流程（選用：Generate application documentation、Extract business rules）。 | 同上 |
 | J | 🔁 WF＋🛠 PPZ | 影響分析技能（本機模式）。 | 同上 |
 | K | 🔁 WF | 實施規劃技能。 | 同上 |
 | L | 🤖 BOB（Z Code） | 依已核准計畫修改，產生 Diff。 | 同上 |
@@ -337,13 +337,13 @@ POC-SOURCE/
 - 確認後，將工作字典複製一份至 `delivery-output/DL-02-data-dictionary.json` 並改為 human-friendly 格式（僅為方便交付）。`bobz/DD.json` 仍是唯一的工作來源，不可直接編輯 `delivery-output/` 內的複本。
 - 關鍵欄位語意（手續費、金額等）標註「待 BIZ 簽核」。
 
-## 步驟卡 I：流程分析與文件（🔁 WF＋🛠 PPZ）
+## 步驟卡 I：流程分析與文件（🔁 WF）
 
-- 整支程式說明 → 啟動 Explain code 工作流程（`explain-workflow`，Z Code）。詢問視角：架構師／業務／開發者。**不可**用 `/explain`。
-- 正式程式文件 → 啟動 Generate program documentation 工作流程（`docgen-workflow`，Z Code）。
-- 業務規則 → 啟動 Extract business rules 工作流程（`brd-workflow`，Z Code）。
-- 跨程式文件 → 啟動 Generate application documentation 工作流程（`wiki-workflow`，**Z Architect**）。輸入是程式文件的 Markdown，需先完成程式文件。
-- 段落流程 → `zopeneditor-cobol-get-program-control-flow`。欄位追蹤 → `zopeneditor-cobol-get-data-flow`。這兩個工具只在 **Z Architect** 提供。
+- 程式文件 → 啟動 Generate program documentation 工作流程（`docgen-workflow`，Z Code），存為 `delivery-output/DL-03-〈變更目標程式〉-explanation.md`。官方預設輸出在 `/docs`，需確認路徑。**不可**用 `/explain`。
+- 行號標註與流程圖是否產出，官方未明列，標示「尚未驗證」，缺漏時列為「邊界」。
+- 業務規則（選用，BIZ 需逐條核對時）→ 啟動 Extract business rules 工作流程（`brd-workflow`，Z Code）。
+- 跨程式文件（選用）→ 啟動 Generate application documentation 工作流程（`wiki-workflow`，**Z Architect**）。輸入是程式文件的 Markdown，需先完成程式文件。
+- 欄位追蹤留給步驟卡 J（`zopeneditor-cobol-get-data-flow`，只在 **Z Architect** 提供）。
 - 動態 CALL 無法解析 → 列為「邊界」，不推斷目標。
 
 ## 步驟卡 J：影響分析（🔁 WF＋🛠 PPZ）

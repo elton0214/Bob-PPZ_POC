@@ -64,7 +64,6 @@
 | 〈業務主題〉 | 資料字典聚焦的業務主題 | 手續費 | 步驟 H 之前 | CR 需求 | ☐ |
 | 〈變數數量〉 | 資料字典提取的關鍵變數數量（10–20） | 15 | 步驟 H 之前 | BOB | ☐ |
 | 〈追蹤欄位〉 | 資料流程追蹤的欄位 | WS-FEE-AMT | 步驟 H 之後 | 資料字典、原始碼 | ☐ |
-| 〈視角〉 | Explain code 的視角：架構師／業務／開發者 | 架構師 | 步驟 I | 使用者選擇 | ☐ |
 | 〈變更標題〉 | 變更請求標題 | 退票手續費依面額分級 | 步驟 J 之前 | CR 單 | ☐ |
 | 〈CR文件路徑〉 | CR 需求單文件的實際路徑（Bob 須完整讀取） | CR/CR-sample1.md | 步驟 J 之前 | CR 單 | ☐ |
 | 〈影響分析報告路徑〉 | 影響分析報告的實際路徑 | delivery-output/DL-04-impact-analysis.md | 步驟 J 之後 | 步驟 J 產出 | ☐ |
@@ -391,8 +390,7 @@ flowchart LR
      4. 預估變更目標程式：待步驟 F/J 分析確認
      5. 預估變更 Copybook：待步驟 J 分析確認
      6. 建議追蹤欄位：待步驟 H 資料字典提取
-     7. 預設視角：架構師
-     8. 資料字典預設數量：15
+     7. 資料字典預設數量：15
 
      【生成規則】
      1. 讀取工作區的 `OP-MANUAL.md`。
@@ -503,7 +501,7 @@ flowchart LR
 **步驟**
 1. 切換到 **Z Code** 模式。在對話框輸入 `/data-dictionary-management`，或點選 **Start Workflow** 選擇 **Generate data dictionary**。
 2. 貼下一鍵建立資料字典提示詞。
-   - 💬 **Bob 提示詞**：`請幫我為 〈變更目標程式〉 一鍵建立資料字典：(1) 自動提取前 〈變數數量〉 個最關鍵的業務變數並聚焦於與 〈業務主題〉 相關之欄位；(2) 自動展開縮寫並為變數生成詳細的語意描述（若工具出錯請立即停止，不可人工猜測）；(3) 自動產出實體 `bobz/DD.json`，並自我核對確保每個項目的 scope 陣列均含 〈變更目標程式〉；(4) 請將最終產出的字典清單與縮寫對照，以表格形式呈現在對話框中。`
+   - 💬 **Bob 提示詞**：`/data-dictionary-management @<變更目標程式>`
 3. 在差異檢視畫面逐項快速確認。
 4. 請 BIZ 簽核關鍵欄位（手續費、金額等）的業務語意。
 5. 將工作字典複製到交付資料夾（僅為方便交付；`bobz/DD.json` 仍是 Bob 背景讀取的來源）。
@@ -531,40 +529,41 @@ flowchart LR
 
 ### 步驟卡 I：流程分析與文件產生
 
-**目的**：弄清楚程式現在怎麼運作：做了哪些事、有哪些業務規則、關鍵欄位怎麼流動。要改之前，必須先懂現況。
+**目的**：弄清楚程式現在怎麼運作：做了哪些事、有哪些業務規則、用到哪些欄位與相依元件。要改之前，必須先懂現況。
 
 **負責**：BOB。DEV 與 BIZ 核對。
 
-**執行方式**：🔁 WF＋🛠 PPZ（用自然語言觸發 `zopeneditor-cobol-get-program-control-flow`、`zopeneditor-cobol-get-data-flow`；這兩個工具只在 Z Architect 模式提供）。提示詞見各步驟下方.
+**執行方式**：🔁 WF（自然語言觸發 **Generate program documentation** 工作流程，Z Code）。欄位資料流程追蹤留給步驟卡 J。
 
 **前置條件**
 - 資料字典已建立，或已確認略過。
 
 **步驟**
 1. 切換到 **Z Code** 模式。
-2. 貼下一鍵剖析說明與規則提煉提示詞。
-   - 💬 **Bob 提示詞**：`請幫我對 〈變更目標程式〉.cbl 執行一鍵剖析：(1) 以 〈視角：架構師〉 視角解釋整支程式，並為每項關鍵判斷、業務規則或主要處理步驟標註來源行號；(2) 自動提煉業務規則（Extract business rules）並形成 Markdown 報告；(3) 繪製 Mermaid 格式之內部段落控制流程圖；(4) 追蹤關鍵欄位 〈追蹤欄位〉 於程式中被讀取、寫入與傳遞的所有位置。`
+2. 自然語言觸發 **Generate program documentation** 工作流程
+   - 💬 **Bob 提示詞**：`請啟動 Generate program documentation 工作流程，針對 〈變更目標程式〉.cbl 產生程式文件（含總覽、邏輯流程、業務規則、資料使用、相依元件與錯誤處理）。請盡量標註對應行號，並將結果存為 delivery-output/DL-03-〈變更目標程式〉-explanation.md。`
+   - 官方說明工作流程預設輸出位置為 `/docs`。請確認檔案已存為上述 DL-03 路徑；若在其他位置，請搬移或另存。
+   - 行號標註、流程圖是否產出，官方文件未明列：**尚未驗證**。請 DEV 檢查，缺漏時列為「邊界」。
 3. 產生 human-friendly 精簡版，供 BIZ 與 DEV 快速閱讀（原檔保留，不覆蓋）。
    - 💬 **Bob 提示詞**：`/brief-report delivery-output/DL-03-〈變更目標程式〉-explanation.md`
    - 此指令呼叫 `brief-report` 技能（`.bob/skills/brief-report/SKILL.md`，隨專案版控；新開對話才會載入）。技能固定保留邊界與「尚未驗證」項目，並在寫入前後核對數量。
-4. 若需要產生正式程式文件與跨程式 HTML 文件，點選 **Start Workflow**，執行 **Generate program documentation** 與 **Generate application documentation**。
+4. （選用）若需要跨程式 HTML 文件，切換到 **Z Architect** 模式，點選 **Start Workflow** 執行 **Generate application documentation**。輸入是程式文件的 Markdown，須先完成上述程式文件。
 
 **預期結果**
 *   **【實體檔案產出與更新】**：
-    *   **產生檔**：`delivery-output/DL-03-〈變更目標程式〉-explanation.md`（程式剖析說明與業務規則書）。
+    *   **產生檔**：`delivery-output/DL-03-〈變更目標程式〉-explanation.md`（程式文件，含業務規則）。
     *   **產生檔**：`delivery-output/DL-03-〈變更目標程式〉-explanation_brief.md`（精簡版，供 BIZ 閱讀；原檔仍為完整底稿）。
-*   **分析報告**：取得完整的流程分析說明（包括外部介面、關鍵判斷邏輯，每項皆標註行號）。
-*   **控制與資料流**：取得 Mermaid 格式的段落控制流程圖，及 WS 欄位之讀寫追蹤紀錄。
+*   **分析報告**：取得程式文件（包括總覽、邏輯流程、業務規則、資料使用、相依元件、錯誤處理）。
 *   **階段交付物**：完成 **DL-03：流程分析報告**。
 
 **問題處理**
 
 | 條件 | 動作 |
 |---|---|
-| 整份解釋太長 | 改問指定行號範圍或單一段落。 |
+| 整份文件太長 | 改問指定行號範圍或單一段落。 |
 | 動態 CALL 無法解析 | 請 DEV 補充已知目標。仍未知的項目列為「尚未驗證」。 |
 | 語意有爭議 | 以 BIZ 簽核為準。更新資料字典。 |
-| 找不到 `zopeneditor-*` 工具 | 確認目前是 Z Architect 模式。 |
+| 業務規則章節不夠 BIZ 核對 | 選用：另啟動 **Extract business rules** 工作流程，並由 DEV 比對兩者有無矛盾。 |
 
 ---
 
@@ -783,7 +782,7 @@ flowchart LR
 |---|---|---|
 | 驗證登入 | 任一 | `請用一句話介紹你自己。` |
 | 初始化工作區 | Z Code | `/init` |
-| 說明整支程式 | Z Code | `請啟動 Explain code 工作流程，說明 〈變更目標程式〉.cbl。視角是 〈視角：架構師〉。請標註對應段落。` |
+| 產生程式文件 | Z Code | `請啟動 Generate program documentation 工作流程，針對 〈變更目標程式〉.cbl 產生程式文件。請盡量標註對應行號。` |
 | 說明片段 | Z Code 或 Z Architect | `請說明 〈變更目標程式〉.cbl 第 〈起〉 至 〈迄〉 行在做什麼。請列出用到的欄位。` |
 | 追蹤欄位 | Z Architect | `請追蹤 〈追蹤欄位〉 在 〈變更目標程式〉 中被讀取、寫入與傳遞的位置。` |
 | 建立資料字典 | Z Code | 按 Start Workflow，選 Generate data dictionary。或輸入 `/data-dictionary-management`。請聚焦與手續費相關的欄位。 |

@@ -20,6 +20,7 @@ Bob-PPZ_POC/
 ├── zapp.yaml                      ← 已存在（Z Open Editor 設定：COPY／PROC 搜尋路徑，指向 POC-SOURCE/**）
 ├── README.md                      ← 本文件
 ├── RUNBOOK.md
+├── STATE.md                       ← 進度模板（不填進度）
 ├── CR/
 │   └── CR-sample1.md                  ← 變更需求單（退票手續費計算規則分級調整）
 ├── client-discussion-doc/         ← 訪談／註冊／防火牆文件（PDF、PPTX）
@@ -42,8 +43,10 @@ Bob-PPZ_POC/
 ├── zapp.yaml                      ← 不變（若程式碼放在其他資料夾，須同步修改 locations）
 ├── README.md
 ├── .bob/skills/brief-report/      ← 專案技能，需提交版控
-├── RUNBOOK.md                   ← 通用手冊模板
+├── RUNBOOK.md                   ← 手冊模板
 ├── RUNBOOK_sample1.md             ← 步驟卡 E 實例化手冊（收到 CR 單與 Zip 後由 Bob 填入參數生成）
+├── STATE.md                       ← 進度模板（不變）
+├── STATE_sample1.md               ← 步驟卡 E 同時產生的進度檔（逐步更新狀態與證據）
 ├── CR/…
 ├── client-discussion-doc/…
 │
@@ -100,7 +103,7 @@ Bob-PPZ_POC/
 | 不進版控 | `WCA4ZTMIOutput/`、`*.db`、`*.db-journal` | 掃描資料庫，可重新產生 |
 | 不進版控 | `*.zip`、`*.7z`、`*.rar` | 客戶交付壓縮檔（密碼保護） |
 | 不進版控 | `*.pem`、`*.key`、`*.pfx`、`.env`、`.env.*` | 憑證類，不得提交 |
-| 進版控 | `bobz/DD.json`、`delivery-output/DL-*`、`CR/`、`RUNBOOK*.md`、`.bob/skills/`、`zapp.yaml` | 刻意追蹤 |
+| 進版控 | `bobz/DD.json`、`delivery-output/DL-*`、`CR/`、`RUNBOOK*.md`、`STATE*.md`、`.bob/skills/`、`zapp.yaml` | 刻意追蹤 |
 
 > **`zapp.yaml` 路徑注意**：`locations` 目前是 `POC-SOURCE/**`。若交付包解壓到其他資料夾（例如 `sample1-source/POC-SOURCE/`），編輯器可能找不到 COPY 檔，造成 `zopeneditor-*` 工具與 COPY 展開結果不完整。是否需要修改，**尚未驗證**，請在步驟 F 解壓縮後確認。
 
@@ -110,7 +113,7 @@ Bob-PPZ_POC/
 
 ```mermaid
 flowchart LR
-    E[E 手冊實例化] -->|填入參數| OP[RUNBOOK_sample1.md]
+    E[E 手冊實例化] -->|填入參數| OP[RUNBOOK_sample1.md + STATE_sample1.md]
     OP --> F[F 交付檢查]
     F -->|解壓縮 + 報告| P[POC-SOURCE/ + DL-00]
     F --> G[G 掃描建庫]
@@ -126,7 +129,7 @@ flowchart LR
 
 | 步驟 | 新增 | 修改 |
 |---|---|---|
-| E | `RUNBOOK_sample1.md`（專屬實例化手冊） | — |
+| E | `RUNBOOK_sample1.md`（專屬實例化手冊）、`STATE_sample1.md`（進度檔） | — |
 | F | `POC-SOURCE/*`、`DL-00` | — |
 | G | SQLite 資料庫、`DL-01` | `.bobz/local-settings.json` |
 | H | `bobz/DD.json`、`DL-02`（複製） | — |
@@ -136,6 +139,9 @@ flowchart LR
 | L | `DL-06`、`DL-06_brief` | `CHKRTN01.cbl`、`CHKFEE01.cpy`、`bobz/DD.json`、`DL-02`（重新複製）、`DL-06_brief`（審閱後重產） |
 | M | `DL-07`、`DL-07_brief` | — |
 | N | `DL-08` | — |
+
+
+> 每個步驟完成後，都要更新 `STATE_sample1.md` 的狀態與證據欄，上表不逐列列出。
 
 ## 四、文件維護規則（STE 精神）
 

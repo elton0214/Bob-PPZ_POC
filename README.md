@@ -1,14 +1,14 @@
 # Bob + PPZ POC — 專案資料夾說明
 
 本文件說明專案資料夾在 POC 前後的樣貌，以及各步驟卡（E–N）對檔案系統的影響。
-規則依據：[`AGENTS.md`](AGENTS.md)、[`OP-MANUAL.md`](OP-MANUAL.md)。
+規則依據：[`AGENTS.md`](AGENTS.md)、[`RUNBOOK.md`](RUNBOOK.md)。
 參考來源與證據對照：[`RESOURCES.md`](RESOURCES.md)。CR 目錄範本目前僅供參考，暫無強制填寫要求。
 
 ## 階段概覽（核心原則）
 
 - **預期客戶提供**：CR 需求變更單（email / Word）＋ 程式碼壓縮包（`.zip`）
-- **現場操作流程**：Git 開新分支，執行 `OP-MANUAL_xxx.md`（僅 步驟卡 E – N）
-    - 階段流程參考：[`OP-MANUAL.md`](OP-MANUAL.md) "1.1 端到端流程"。
+- **現場操作流程**：Git 開新分支，執行 `RUNBOOK_xxx.md`（僅 步驟卡 E – N）
+    - 階段流程參考：[`RUNBOOK.md`](RUNBOOK.md) "1.1 端到端流程"。
 - **預期交付**：可參考本文件「[二、After](#二after全部步驟卡-en-完成後的預期狀態)」交付物清單（`delivery-output/` 之 DL-00 至 DL-08）＋ 1 份 Word 報告（各步驟截圖存證）
 
 ## 一、Before（POC 開始前的狀態）
@@ -19,7 +19,7 @@ Bob-PPZ_POC/
 ├── .gitignore                     ← 已存在（排除暫存、掃描產物、交付壓縮檔、憑證）
 ├── zapp.yaml                      ← 已存在（Z Open Editor 設定：COPY／PROC 搜尋路徑，指向 POC-SOURCE/**）
 ├── README.md                      ← 本文件
-├── OP-MANUAL.md
+├── RUNBOOK.md
 ├── CR/
 │   └── CR-sample1.md                  ← 變更需求單（退票手續費計算規則分級調整）
 ├── client-discussion-doc/         ← 訪談／註冊／防火牆文件（PDF、PPTX）
@@ -42,8 +42,8 @@ Bob-PPZ_POC/
 ├── zapp.yaml                      ← 不變（若程式碼放在其他資料夾，須同步修改 locations）
 ├── README.md
 ├── .bob/skills/brief-report/      ← 專案技能，需提交版控
-├── OP-MANUAL.md                   ← 通用手冊模板
-├── OP-MANUAL_sample1.md             ← 步驟卡 E 實例化手冊（收到 CR 單與 Zip 後由 Bob 填入參數生成）
+├── RUNBOOK.md                   ← 通用手冊模板
+├── RUNBOOK_sample1.md             ← 步驟卡 E 實例化手冊（收到 CR 單與 Zip 後由 Bob 填入參數生成）
 ├── CR/…
 ├── client-discussion-doc/…
 │
@@ -90,7 +90,7 @@ Bob-PPZ_POC/
 > 請勿直接編輯複本；步驟 L 新增欄位後須重新複製。
 > `_brief` 精簡版由 `/brief-report 〈底稿路徑〉` 產生，供人閱讀。**不取代底稿**，核准與追溯以底稿為準。K、L 的精簡版在審閱／核准**之前**產生，底稿有修改須重新產生。
 >
-> **版控注意**：`.bob/skills/brief-report/` 若未提交，切換分支後技能不會出現。需與 `OP-MANUAL.md` 一併提交。
+> **版控注意**：`.bob/skills/brief-report/` 若未提交，切換分支後技能不會出現。需與 `RUNBOOK.md` 一併提交。
 
 ### 版控範圍（依 `.gitignore`）
 
@@ -100,7 +100,7 @@ Bob-PPZ_POC/
 | 不進版控 | `WCA4ZTMIOutput/`、`*.db`、`*.db-journal` | 掃描資料庫，可重新產生 |
 | 不進版控 | `*.zip`、`*.7z`、`*.rar` | 客戶交付壓縮檔（密碼保護） |
 | 不進版控 | `*.pem`、`*.key`、`*.pfx`、`.env`、`.env.*` | 憑證類，不得提交 |
-| 進版控 | `bobz/DD.json`、`delivery-output/DL-*`、`CR/`、`OP-MANUAL*.md`、`.bob/skills/`、`zapp.yaml` | 刻意追蹤 |
+| 進版控 | `bobz/DD.json`、`delivery-output/DL-*`、`CR/`、`RUNBOOK*.md`、`.bob/skills/`、`zapp.yaml` | 刻意追蹤 |
 
 > **`zapp.yaml` 路徑注意**：`locations` 目前是 `POC-SOURCE/**`。若交付包解壓到其他資料夾（例如 `sample1-source/POC-SOURCE/`），編輯器可能找不到 COPY 檔，造成 `zopeneditor-*` 工具與 COPY 展開結果不完整。是否需要修改，**尚未驗證**，請在步驟 F 解壓縮後確認。
 
@@ -110,7 +110,7 @@ Bob-PPZ_POC/
 
 ```mermaid
 flowchart LR
-    E[E 手冊實例化] -->|填入參數| OP[OP-MANUAL_sample1.md]
+    E[E 手冊實例化] -->|填入參數| OP[RUNBOOK_sample1.md]
     OP --> F[F 交付檢查]
     F -->|解壓縮 + 報告| P[POC-SOURCE/ + DL-00]
     F --> G[G 掃描建庫]
@@ -126,7 +126,7 @@ flowchart LR
 
 | 步驟 | 新增 | 修改 |
 |---|---|---|
-| E | `OP-MANUAL_sample1.md`（專屬實例化手冊） | — |
+| E | `RUNBOOK_sample1.md`（專屬實例化手冊） | — |
 | F | `POC-SOURCE/*`、`DL-00` | — |
 | G | SQLite 資料庫、`DL-01` | `.bobz/local-settings.json` |
 | H | `bobz/DD.json`、`DL-02`（複製） | — |
@@ -139,7 +139,7 @@ flowchart LR
 
 ## 四、文件維護規則（STE 精神）
 
-本節供《OP-MANUAL.md》的維護者使用。現場人員不需閱讀。
+本節供《RUNBOOK.md》的維護者使用。現場人員不需閱讀。
 
 本版依 ASD-STE100（Simplified Technical English）的精神，用中文改寫。規則如下：
 
@@ -148,7 +148,7 @@ flowchart LR
 | 一句一事 | 每個步驟只寫一個動作。 |
 | 短句 | 步驟句不超過 25 字。說明句不超過 35 字。 |
 | 主動語氣 | 用祈使句開頭：「開啟」「輸入」「確認」。不寫被動句。 |
-| 一詞一義 | 同一個東西只用同一個詞（見 `OP-MANUAL.md` 0.3 用語表）。 |
+| 一詞一義 | 同一個東西只用同一個詞（見 `RUNBOOK.md` 0.3 用語表）。 |
 | 警告在前 | 「警告」與「注意」放在相關步驟之前。 |
 | 條件在前 | 先寫條件，再寫動作：「若……，則……」。 |
 | 明確用詞 | 不用「適當」「必要時」「盡量」「視情況」。要寫出數字、名稱或條件。 |

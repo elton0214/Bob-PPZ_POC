@@ -378,10 +378,10 @@ flowchart LR
    ```powershell
    git checkout -b <填入實際git分支名稱，例如：cr/ub-fee-change>
    ```
-2. **一鍵生成實例化手冊**：在專屬分支上，向 Bob 發送實例化提示詞，生成專屬操作手冊（例如 `OP-MANUAL_<手冊名稱suffix>.md`）：
+2. **一鍵生成實例化手冊**：在專屬分支上，向 Bob 發送實例化提示詞，生成專屬操作手冊（例如 `RUNBOOK_<手冊名稱suffix>.md`）：
    - 💬 **Bob 提示詞**：
      ```markdown
-     請根據我提供的「客戶 CR 需求單內容」與「程式碼交付資訊」，以工作區的 `OP-MANUAL.md` 為模板，為我生成一份已填入實體參數的專屬操作手冊 `OP-MANUAL_<手冊名稱suffix>.md`。
+     請根據我提供的「客戶 CR 需求單內容」與「程式碼交付資訊」，以工作區的 `RUNBOOK.md` 為模板，為我生成一份已填入實體參數的專屬操作手冊 `RUNBOOK_<手冊名稱suffix>.md`。
 
      【輸入資訊】
      1. CR 變更請求標題：〈填入實際 CR 標題，例如：退票手續費依面額分級調整〉
@@ -393,17 +393,17 @@ flowchart LR
      7. 資料字典預設數量：15
 
      【生成規則】
-     1. 讀取工作區的 `OP-MANUAL.md`。
+     1. 讀取工作區的 `RUNBOOK.md`。
      2. 將所有提示詞中的固定參數（如 〈變更標題〉、〈CR文件路徑〉、〈交付壓縮檔〉、〈業務主題〉、〈變更目標程式〉 等）替換為上述真實值。
      3. 嚴禁在產出文件中包含任何解壓密碼或機密密碼。
      4. 嚴禁在此時將已知答案注入步驟卡 J 等前面的步驟中（已知答案僅供步驟卡 N 使用）。
      5. 保持 STE 精神與所有步驟卡（A 至 N）之結構、表格、警告事項不變。
-     6. 將結果儲存為新檔案 `OP-MANUAL_<手冊名稱suffix>.md`（不覆蓋原有的 `OP-MANUAL.md`）。
+     6. 將結果儲存為新檔案 `RUNBOOK_<手冊名稱suffix>.md`（不覆蓋原有的 `RUNBOOK.md`）。
      ```
 
 **預期結果**
 - 建立專屬本機 Git 分支（例如 `cr/ub-fee-change`）。
-- 工作區產生填妥真實參數的 `OP-MANUAL_<手冊名稱suffix>.md`，後續步驟卡可直接複製該檔內的提示詞。
+- 工作區產生填妥真實參數的 `RUNBOOK_<手冊名稱suffix>.md`，後續步驟卡可直接複製該檔內的提示詞。
 
 ---
 
@@ -419,16 +419,16 @@ flowchart LR
 - D2 已核可。
 - SEC 已核可脫敏規則。
 - 目前在專屬分支，不在主線分支（`main` / `master`）。
-- 已依步驟卡 E 產生專屬實例化手冊 `OP-MANUAL_<手冊名稱suffix>.md`。
+- 已依步驟卡 E 產生專屬實例化手冊 `RUNBOOK_<手冊名稱suffix>.md`。
 
 **步驟**
 1. 將從客戶處取得之代碼交付壓縮檔（例如 `UNION_BANK_POC.zip`）直接放置於工作區核准路徑。
-2. 貼下一鍵交付完整性檢查提示詞（可直接複製 `OP-MANUAL_<手冊名稱suffix>.md` 內之提示詞，不需手動置換參數）。
+2. 貼下一鍵交付完整性檢查提示詞（可直接複製 `RUNBOOK_<手冊名稱suffix>.md` 內之提示詞，不需手動置換參數）。
    - 💬 **Bob 提示詞**：`這是我剛拿到的客戶交付壓縮包 〈交付壓縮檔〉（若有密碼，密碼為 〈壓縮檔密碼〉）。我已取得 D2 授權。請一鍵幫我跑完步驟卡 F 的 1 至 7 步完整性稽核：(1) 在背景自動將其解壓縮至工作區核准路徑；(2) 自動解析內含之 MANIFEST.csv 宣告與 README.txt 編譯環境，比對宣告數與解壓縮後的實際檔數；(3) 自動計算工作區所有實體檔案的 SHA-256 哈希值並與 MANIFEST.csv 比對，抓出校驗碼不符或空白之項目；(4) 自動唯讀掃描所有 COBOL、Copybook、JCL 的交叉相依性（COPY/CALL 關係與缺失項目），偵測 CICS/DB2/IMS/MQ 等中介軟體關鍵字；(5) 自動彙整並輸出完整的《步驟卡 F — 程式碼交付完整性檢查報告》，並將報告存檔於 `delivery-output/DL-00-delivery-check.md`（不另存 `.bobz/`）。`
 3. **建立基準線（Baseline）Commit**：在交付檢查完成且代碼解壓至 `POC-SOURCE/` 後，執行基準 Commit 鎖定初始狀態：
    ```powershell
    git add .
-   git commit -m "baseline: add OP-MANUAL_<手冊名稱suffix>.md and import customer source code"
+   git commit -m "baseline: add RUNBOOK_<手冊名稱suffix>.md and import customer source code"
    ```
    > 🛑 **資安提醒**：版控僅限本機 Local Git 操作，**不可** push 至外部未經授權之平台；密碼絕對**不可**寫入檔案或 commit。
 

@@ -1,0 +1,29 @@
+      ******************************************************************
+      * DCLGEN TABLE(CHK_RETURN_TXN)                                   *
+      *        LIBRARY(PROD.CHK.DCLGEN(CHKRTNDG))                      *
+      *        LANGUAGE(COBOL)                                         *
+      *        QUOTE                                                   *
+      ******************************************************************
+           EXEC SQL DECLARE CHK_RETURN_TXN TABLE
+           ( CHECK_NO                       CHAR(10) NOT NULL,
+             ACCT_NO                        CHAR(12) NOT NULL,
+             CHECK_AMT                      DECIMAL(13, 2) NOT NULL,
+             FEE_AMT                        DECIMAL(9, 2) NOT NULL,
+             RETURN_DATE                    DATE NOT NULL,
+             REASON_CODE                    CHAR(2) NOT NULL,
+             POST_FLAG                      CHAR(1) NOT NULL
+           ) END-EXEC.
+      ******************************************************************
+      * COBOL DECLARATION FOR TABLE CHK_RETURN_TXN                     *
+      ******************************************************************
+       01  DCLCHK-RETURN-TXN.
+           10 CHECK-NO             PIC X(10).
+           10 ACCT-NO              PIC X(12).
+           10 CHECK-AMT            PIC S9(11)V9(2) USAGE COMP-3.
+           10 FEE-AMT              PIC S9(7)V9(2) USAGE COMP-3.
+           10 RETURN-DATE          PIC X(10).
+           10 REASON-CODE          PIC X(2).
+           10 POST-FLAG            PIC X(1).
+      ******************************************************************
+      * THE NUMBER OF COLUMNS DESCRIBED BY THIS DECLARATION IS 7       *
+      ******************************************************************
